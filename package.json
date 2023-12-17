@@ -1,20 +1,32 @@
 {
-  "name": "html-formatter",
-  "version": "0.1.9",
-  "description": "html prettify",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
+	"name": "htmlpm",
+	"version": "0.0.0",
+	"description": "Format HTML with prettify and minify.",
+	"scripts": {
+		"check": "tsc"
+	},
+	"exports": {
+		".": {
+			"types": "./types/index.d.ts",
+			"import": "./src/exports/index.js"
+		}
+	},
+	"files": [
+		"src",
+    "types"
+	],
+	"devDependencies": {
+		"typescript": "^5.0.0"
+	},
+	"types": "types/index.d.ts",
+	"type": "module",
+	"repository": {
     "type": "git",
-    "url": "git+https://github.com/uznam8x/html-formatter.git"
+    "url": "git+https://github.com/j4w8n/htmlpm.git"
   },
-  "keywords": [],
-  "author": "uznam8x, prisf, codenut, html, minify, prettify, beautify, html framework",
-  "license": "GPLv2",
+  "license": "MIT",
   "bugs": {
-    "url": "https://github.com/uznam8x/html-formatter/issues"
+    "url": "https://github.com/j4w8n/htmlpm/issues"
   },
-  "homepage": "https://github.com/uznam8x/html-formatter#readme"
+  "homepage": "https://github.com/j4w8n/htmlpm#readme"
 }
