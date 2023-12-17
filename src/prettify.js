@@ -4,32 +4,10 @@ import { minify } from './minify.js'
 
 /**
  * @type {{ line: string[] }}
- * 
  */
 const convert = {
   line: []
 }
-
-/**
- * Temporarily remove the text of a comment.
- * This ensures any line returns, inside comment tags, are preserved during minify().
- * 
- * @example <!-- This is a comment. --> => <!-- [#!# : 0 : #!#] -->
- * @param {string} el
- * @returns string
- */
-// const comment = (el: string) => {
-//   convert.comment = []
-
-//   /* Change the format of and push html comments. */
-//   el = el.replace(/(<!--(.|\n)*?-->)/g, (match) => {
-//     convert.comment.push(match)
-
-//     return `<!-- [#!# : ${convert.comment.length - 1} : #!#] -->`
-//   })
-
-//   return el
-// }
 
 /**
  * Prep html elements and comments for processing.
@@ -59,7 +37,7 @@ const line = (el) => {
  * 
  * @param {string} el 
  * @param {number} step 
- * @returns 
+ * @returns string
  */
 const tidy = (el, step) => {
   /* Track current number of indentions needed */
@@ -143,7 +121,6 @@ const tidy = (el, step) => {
  */
 export const prettify = (el, options) => {
   el = closing(el)
-  //el = comment(el)
   el = entity(el)
   el = minify(el)
   el = line(el)
