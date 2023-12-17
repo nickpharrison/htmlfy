@@ -83,9 +83,6 @@ const tidy = (el, step) => {
         /* Determine number of steps for line indention. */
         const offset = indents.length - subtrahend
 
-        /* We're processing a comment. */
-        //if (match.indexOf('<!--') > -1) match = match.replace('<!-- [#!# :', `<!-- [#!# %${offset}% :`)
-
         /* Adjust for the next round */
         indents = indents.substring(0, offset)
         console.log('data for index', index, indents, subtrahend, offset)
@@ -102,12 +99,6 @@ const tidy = (el, step) => {
       return match.replace(/\n|\t|\s{2,}/g, '')
     }
   )
-
-  /* Restore and minify comments. */
-  // convert.comment.forEach((source, index) => {
-  //   el = el.replace(new RegExp(`<!--[^>]*${index} : #!#] -->`, 'g'), 
-  //     source.replace(/\n|\t/g, '').replace(/\s{2,}/g, ' '))
-  // })
 
   return el.substring(1, el.length - 1)
 }
