@@ -83,7 +83,7 @@ const tidy = (el, step) => {
         /* Determine offset for line indention. */
         const offset = (indents.length - subtrahend) * step
 
-        /* Adjust for the next round */
+        /* Adjust for the next round. */
         indents = indents.substring(0, offset)
         console.log('data for index', index, indents, subtrahend, offset)
 
@@ -92,7 +92,7 @@ const tidy = (el, step) => {
           .replace(`[#-# : ${index} : `, '')
           .replace(' : #-#]', '')
 
-        /* Pad the string with spaces and return */
+        /* Pad the string with spaces and return. */
         return result.padStart(result.length + offset)
       })
   })
