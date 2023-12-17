@@ -57,7 +57,7 @@ const tidy = (el, step) => {
         const prevLine = `[#-# : ${index - 1} : ${convert.line[index - 1]} : #-#]`
         console.log('previous line for index', index, prevLine)
         /**
-         * Arbitratry character, since we're not using actual tabs.
+         * Arbitratry character, to keep track of the string's length.
          * 
          * TODO - Replace this mechanism, if possible.
          */
@@ -80,15 +80,20 @@ const tidy = (el, step) => {
         /* prevLine is a closing tag. */
         if (prevLine.indexOf(`#-# : ${index - 1} : </`) > -1) subtrahend++
 
-        /* Determine number of steps for line indention. */
-        const offset = indents.length - subtrahend
+        /* Determine offset for line indention. */
+        const offset = (indents.length - subtrahend) * step
 
         /* Adjust for the next round */
         indents = indents.substring(0, offset)
         console.log('data for index', index, indents, subtrahend, offset)
-        const result = match.replace(`[#-# : ${index} : `, '').replace(' : #-#]', '')
 
-        return result.padStart(result.length + (step * offset))
+        /* Remove the prefix and suffix, leaving the content. */
+        const result = match
+          .replace(`[#-# : ${index} : `, '')
+          .replace(' : #-#]', '')
+
+        /* Pad the string with spaces and return */
+        return result.padStart(result.length + offset)
       })
   })
 
