@@ -1,2 +1,2 @@
 export { minify } from '../minify.js'
-export { pretty } from '../pretty.js'
+export { prettify } from '../prettify.js'
