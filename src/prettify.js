@@ -111,16 +111,16 @@ const tidy = (el, step) => {
 /**
  * 
  * @param {string} el 
- * @param {Object} options={}
- * @param {number} options.tab_size=2 
+ * @param {Object} options={ tab_size: 2 }
+ * @param {number=} options.tab_size=2
  * @returns string
  */
-export const prettify = (el, options) => {
+export const prettify = (el, options = { tab_size: 2 }) => {
   el = closing(el)
   el = entity(el)
   el = minify(el)
   el = line(el)
-  el = tidy(el, options.tab_size)
+  el = tidy(el, options.tab_size ?? 2)
 
   return el
 }
