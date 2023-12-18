@@ -1,5 +1,6 @@
 /**
- * Remove line returns, tabs, and relevant spaces.
+ * Creates a single-line string
+ * by removing line returns, tabs, and relevant spaces.
  * 
  * @param {string} el
  * @returns string

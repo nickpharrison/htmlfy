@@ -1,10 +1,16 @@
+const void_elements = [
+  'area', 'base', 'br', 'col', 'embed', 'hr', 
+  'img', 'input', 'link', 'meta',
+  'param', 'source', 'track', 'wbr'
+]
+
 /**
- * Trim line returns and spaces from textarea elements.
+ * Special processing for textareas and void elements.
  * 
  * @param {string} el
  * @returns string
  */
-export const entity = (el) => {
+export const specials = (el) => {
   /**
    * Within textarea content, trim the following:
    * - leading line return plus any number of spaces
@@ -15,7 +21,7 @@ export const entity = (el) => {
    */
   el = el.replace(/(<textarea[^>]*>)\n\s+/g, '$1')
 
-  /* Within content, trim trailing spaces */
+  /* Within textarea content, trim trailing spaces */
   el = el.replace(/\s+<\/textarea>/g, '</textarea>')
 
   /* Match an entire textarea element and URL encode the below content characters. */
@@ -33,6 +39,19 @@ export const entity = (el) => {
         .replace(/\}/g, '&#125;')
         .replace(/\s/g, '&nbsp;')
     })
+  })
+
+  /**
+   * Ensure void elements are "self-closing".
+   * 
+   * @example <br> => <br />
+   */
+  el = el.replace(/<([a-zA-Z\-0-9]+)[^>]*>/g, (match, name) => {
+    if (void_elements.indexOf(name) > -1) {
+      return (`${match.substring(0, match.length - 1)} />`).replace(/\/\s\//g, '/')
+    }
+
+    return match.replace(/[\s]?\/>/g, `></${name}>`)
   })
 
   return el

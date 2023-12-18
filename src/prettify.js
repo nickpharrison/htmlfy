@@ -1,5 +1,4 @@
-import { closing } from './closing.js'
-import { entity } from './entity.js'
+import { specials } from './specials.js'
 import { minify } from './minify.js'
 
 /**
@@ -10,7 +9,7 @@ const convert = {
 }
 
 /**
- * Prep html elements and comments for processing.
+ * Isolate tags, content, and comments.
  * 
  * @example <div>Hello World!</div> => 
  *  [#-# : 0 : <div> : #-#]
@@ -19,7 +18,7 @@ const convert = {
  * @param {string} el
  * @returns string
  */
-const line = (el) => {
+const enqueue = (el) => {
   convert.line = []
   let i = -1
 
@@ -34,12 +33,26 @@ const line = (el) => {
 }
 
 /**
+ * Preprocess the HTML.
+ * 
+ * @param {string} el
+ * @returns string
+ */
+const preprocess = (el) => {
+  el = specials(el)
+  el = minify(el)
+  el = enqueue(el)
+
+  return el
+}
+
+/**
  * 
  * @param {string} el 
  * @param {number} step 
  * @returns string
  */
-const tidy = (el, step) => {
+const process = (el, step) => {
   /* Track current number of indentions needed */
   let indents = ''
 
@@ -109,6 +122,7 @@ const tidy = (el, step) => {
 }
 
 /**
+ * Format HTML with line returns and indentions.
  * 
  * @param {string} el 
  * @param {Object} options={ tab_size: 2 }
@@ -116,11 +130,8 @@ const tidy = (el, step) => {
  * @returns string
  */
 export const prettify = (el, options = { tab_size: 2 }) => {
-  el = closing(el)
-  el = entity(el)
-  el = minify(el)
-  el = line(el)
-  el = tidy(el, options.tab_size ?? 2)
+  el = preprocess(el)
+  el = process(el, options.tab_size ?? 2)
 
   return el
 }
