@@ -1,3 +1,4 @@
+/* Testing. */
 import { prettify } from './src/prettify'
 const html = `<form id="fury-prompt-3"     >     <!-- 
       

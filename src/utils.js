@@ -1,4 +1,3 @@
-
 /**
  * Generic utility which merges two objects.
  * 
