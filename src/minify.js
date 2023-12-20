@@ -1,12 +1,12 @@
 /**
- * Creates a single-line string
+ * Creates a single-line HTML string
  * by removing line returns, tabs, and relevant spaces.
  * 
- * @param {string} el
- * @returns string
+ * @param {string} html
+ * @returns A minified HTML string.
  */
-export const minify = (el) => {
-  return el
+export const minify = (html) => {
+  return html
     .replace(/\n|\t/g, '')
     .replace(/[a-z]+="\s*"/ig, '')
     .replace(/>\s+</g, '><')

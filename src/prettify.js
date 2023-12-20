@@ -1,5 +1,36 @@
 import { specials } from './specials.js'
 import { minify } from './minify.js'
+import { mergeConfig } from './utils.js'
+
+/**
+ * @type {import('types').DefaultConfig}
+ */
+const CONFIG = {
+  tab_size: 2
+}
+
+/**
+ * Validate any passed-in config options and merge with CONFIG.
+ * 
+ * @param {import('htmlpm').Config} config
+ * @returns {import('types').ValidatedConfig}
+ */
+const validateConfig = (config) => {
+  let tab_size = config.tab_size
+  console.log('tab size', tab_size)
+
+  if (!tab_size) return mergeConfig(CONFIG, config)
+
+  tab_size = Math.floor(tab_size)
+  
+  if (tab_size < 1 || tab_size > 16) throw 'Tab size out of range. Expecting 1 to 16.'
+  
+  config.tab_size = tab_size
+  console.log('tab size now', config.tab_size)
+
+  return mergeConfig(CONFIG, config)
+
+}
 
 /**
  * @type {{ line: string[] }}
@@ -15,54 +46,54 @@ const convert = {
  *  [#-# : 0 : <div> : #-#]
  *  Hello World!
  *  [#-# : 1 : </div> : #-#]
- * @param {string} el
- * @returns string
+ * @param {string} html
+ * @returns {string}
  */
-const enqueue = (el) => {
+const enqueue = (html) => {
   convert.line = []
   let i = -1
 
-  el = el.replace(/<[^>]*>/g, (match) => {
+  html = html.replace(/<[^>]*>/g, (match) => {
     convert.line.push(match)
     i++
 
     return `\n[#-# : ${i} : ${match} : #-#]\n`
   })
 
-  return el
+  return html
 }
 
 /**
  * Preprocess the HTML.
  * 
- * @param {string} el
- * @returns string
+ * @param {string} html
+ * @returns {string}
  */
-const preprocess = (el) => {
-  el = specials(el)
-  el = minify(el)
-  el = enqueue(el)
+const preprocess = (html) => {
+  html = specials(html)
+  html = minify(html)
+  html = enqueue(html)
 
-  return el
+  return html
 }
 
 /**
  * 
- * @param {string} el 
+ * @param {string} html 
  * @param {number} step 
- * @returns string
+ * @returns {string}
  */
-const process = (el, step) => {
+const process = (html, step) => {
   /* Track current number of indentions needed */
   let indents = ''
 
-  console.log('processing', el)
+  console.log('processing', html)
   console.log('convert line', convert.line)
 
   /* Process lines and indent. */
   convert.line.forEach((source, index) => {
     console.log('current line is', source, index)
-    el = el
+    html = html
       .replace(/\n+/g, '\n') /* Replace consecutive line returns with singles */
       .replace(`[#-# : ${index} : ${source} : #-#]`, (match) => {
         let subtrahend = 0
@@ -94,7 +125,7 @@ const process = (el, step) => {
         if (prevLine.indexOf(`#-# : ${index - 1} : </`) > -1) subtrahend++
 
         /* Determine offset for line indention. */
-        const offset = (indents.length - subtrahend) * step
+        const offset = indents.length - subtrahend
 
         /* Adjust for the next round. */
         indents = indents.substring(0, offset)
@@ -106,32 +137,34 @@ const process = (el, step) => {
           .replace(' : #-#]', '')
 
         /* Pad the string with spaces and return. */
-        return result.padStart(result.length + offset)
+        return result.padStart(result.length + (step * offset))
       })
   })
 
   /* Remove line returns, tabs, and consecutive spaces within html elements or their content. */
-  el = el.replace(/>[^<]*?[^><\/\s][^<]*?<\/|>\s+[^><\s]|<script[^>]*>\s+<\/script>|<(\w+)>\s+<\/(\w+)|<(\w+)[^>]*>\s<\/(\w+)>|<([\w\-]+)[^>]*[^\/]>\s+<\/([\w\-]+)>/g,
+  html = html.replace(/>[^<]*?[^><\/\s][^<]*?<\/|>\s+[^><\s]|<script[^>]*>\s+<\/script>|<(\w+)>\s+<\/(\w+)|<(\w+)[^>]*>\s<\/(\w+)>|<([\w\-]+)[^>]*[^\/]>\s+<\/([\w\-]+)>/g,
     (match) => {
       console.log('removed stuff', match)
       return match.replace(/\n|\t|\s{2,}/g, '')
     }
   )
 
-  return el.substring(1, el.length - 1)
+  return html.substring(1, html.length - 1)
 }
 
 /**
- * Format HTML with line returns and indentions.
+ * Format HTML with line returns and indentations.
  * 
- * @param {string} el 
- * @param {Object} options={ tab_size: 2 }
- * @param {number=} options.tab_size=2
- * @returns string
+ * @param {string} html 
+ * @param {import('htmlpm').Config} config
+ * @returns {string}
  */
-export const prettify = (el, options = { tab_size: 2 }) => {
-  el = preprocess(el)
-  el = process(el, options.tab_size ?? 2)
+export const prettify = (html, config) => {
+  console.log('tab is', config.tab_size)
+  const validated_config = validateConfig(config)
 
-  return el
+  html = preprocess(html)
+  html = process(html, validated_config.tab_size)
+
+  return html
 }

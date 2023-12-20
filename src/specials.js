@@ -7,10 +7,10 @@ const void_elements = [
 /**
  * Special processing for textareas and void elements.
  * 
- * @param {string} el
+ * @param {string} html
  * @returns string
  */
-export const specials = (el) => {
+export const specials = (html) => {
   /**
    * Within textarea content, trim the following:
    * - leading line return plus any number of spaces
@@ -19,13 +19,13 @@ export const specials = (el) => {
    * 
    * Does not trim lone leading spaces, nor a single line return.
    */
-  el = el.replace(/(<textarea[^>]*>)\n\s+/g, '$1')
+  html = html.replace(/(<textarea[^>]*>)\n\s+/g, '$1')
 
   /* Within textarea content, trim trailing spaces */
-  el = el.replace(/\s+<\/textarea>/g, '</textarea>')
+  html = html.replace(/\s+<\/textarea>/g, '</textarea>')
 
   /* Match an entire textarea element and URL encode the below content characters. */
-  el = el.replace(/<textarea[^>]*>((.|\n)*?)<\/textarea>/g, (match, capture) => {
+  html = html.replace(/<textarea[^>]*>((.|\n)*?)<\/textarea>/g, (match, capture) => {
     return match.replace(capture, (match) => {
       return match
         .replace(/</g, '&lt;')
@@ -46,7 +46,7 @@ export const specials = (el) => {
    * 
    * @example <br> => <br />
    */
-  el = el.replace(/<([a-zA-Z\-0-9]+)[^>]*>/g, (match, name) => {
+  html = html.replace(/<([a-zA-Z\-0-9]+)[^>]*>/g, (match, name) => {
     if (void_elements.indexOf(name) > -1) {
       return (`${match.substring(0, match.length - 1)} />`).replace(/\/\s\//g, '/')
     }
@@ -54,5 +54,5 @@ export const specials = (el) => {
     return match.replace(/[\s]?\/>/g, `></${name}>`)
   })
 
-  return el
+  return html
 }
