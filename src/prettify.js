@@ -84,7 +84,7 @@ const preprocess = (html) => {
  * @returns {string}
  */
 const process = (html, step) => {
-  /* Track current number of indentions needed */
+  /* Track current number of indentations needed */
   let indents = ''
 
   console.log('processing', html)
@@ -124,7 +124,7 @@ const process = (html, step) => {
         /* prevLine is a closing tag. */
         if (prevLine.indexOf(`#-# : ${index - 1} : </`) > -1) subtrahend++
 
-        /* Determine offset for line indention. */
+        /* Determine offset for line indentation. */
         const offset = indents.length - subtrahend
 
         /* Adjust for the next round. */
