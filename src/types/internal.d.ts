@@ -1,4 +1,4 @@
-import { Config } from "htmlpm"
+import { Config } from "fnhtml"
 
 export interface DefaultConfig {
 	tab_size: number

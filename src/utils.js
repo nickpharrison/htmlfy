@@ -29,7 +29,7 @@ const mergeObjects = (current, updates) => {
  * Merge a user config with the default config.
  * 
  * @param {import('types').DefaultConfig} dconfig The default config.
- * @param {import('htmlpm').Config} config The user config.
+ * @param {import('fnhtml').Config} config The user config.
  * @returns {import('types').ValidatedConfig}
  */
 export const mergeConfig = (dconfig, config) => {

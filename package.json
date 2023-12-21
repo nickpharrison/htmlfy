@@ -1,7 +1,7 @@
 {
-	"name": "htmlpm",
+	"name": "fnhtml",
 	"version": "0.0.0",
-	"description": "Format HTML with prettify and minify.",
+	"description": "Functions to format HTML.",
 	"scripts": {
 		"check": "tsc"
 	},

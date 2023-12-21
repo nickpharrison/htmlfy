@@ -12,7 +12,7 @@ const CONFIG = {
 /**
  * Validate any passed-in config options and merge with CONFIG.
  * 
- * @param {import('htmlpm').Config} config
+ * @param {import('fnhtml').Config} config
  * @returns {import('types').ValidatedConfig}
  */
 const validateConfig = (config) => {
@@ -156,7 +156,7 @@ const process = (html, step) => {
  * Format HTML with line returns and indentations.
  * 
  * @param {string} html 
- * @param {import('htmlpm').Config} config
+ * @param {import('fnhtml').Config} config
  * @returns {string}
  */
 export const prettify = (html, config) => {

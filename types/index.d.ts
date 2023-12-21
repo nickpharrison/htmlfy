@@ -1,4 +1,4 @@
-declare module 'htmlpm' {
+declare module 'fnhtml' {
   export interface Config {
     tab_size?: number
   }
