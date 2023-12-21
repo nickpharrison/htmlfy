@@ -13,6 +13,15 @@ declare module 'fnhtml' {
   export function closify(html: string): string
 
   /**
+   * Format textarea content, including enforcement of entities.
+   * 
+   * @param {string} html
+   * @returns An HTML string where entities are enforced on the contents of textareas.
+   * @example <textarea>3 > 2</textarea> => <textarea>3 &gt; 2</textarea>
+   */
+  export function entify(html: string): string
+
+  /**
    * Creates a single-line HTML string
    * by removing line returns, tabs, and relevant spaces.
    * 

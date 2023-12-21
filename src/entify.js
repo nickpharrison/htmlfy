@@ -5,6 +5,7 @@
  * 
  * @param {string} html
  * @returns {string}
+ * @example <textarea>3 > 2</textarea> => <textarea>3 &gt; 2</textarea>
  */
 export const entify = (html) => {
   /**
