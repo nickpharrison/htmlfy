@@ -70,8 +70,8 @@ const enqueue = (html) => {
  */
 const preprocess = (html) => {
   html = closify(html)
-  html = minify(html)
   html = entify(html)
+  html = minify(html)
   html = enqueue(html)
 
   return html
