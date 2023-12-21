@@ -1,11 +1,18 @@
+import { minifyTextareaContent } from "./specials"
+
 /**
- * Enforcement entity characters for textarea content.
+ * Enforce entity characters for textarea content.
  * 
  * @param {string} html
+ * @param {boolean} [minify_content] Minifies the content of textarea elements. 
+ * Defaults to `false`. Consider setting this to `true` if you're running `entify()` 
+ * as a standalone function.
  * @returns {string}
  * @example <textarea>3 > 2</textarea> => <textarea>3 &gt; 2</textarea>
  */
-export const entify = (html) => {
+export const entify = (html, minify_content = false) => {
+  if (minify_content) html = minifyTextareaContent(html)
+
   html = html.replace(/<textarea[^>]*>((.|\n)*?)<\/textarea>/g, (match, capture) => {
     return match.replace(capture, (match) => {
       return match
