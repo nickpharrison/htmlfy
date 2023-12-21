@@ -18,16 +18,14 @@ const CONFIG = {
  */
 const validateConfig = (config) => {
   let tab_size = config.tab_size
-  console.log('tab size', tab_size)
 
-  if (!tab_size) return mergeConfig(CONFIG, config)
+  if (!tab_size) return CONFIG
 
   tab_size = Math.floor(tab_size)
   
   if (tab_size < 1 || tab_size > 16) throw 'Tab size out of range. Expecting 1 to 16.'
   
   config.tab_size = tab_size
-  console.log('tab size now', config.tab_size)
 
   return mergeConfig(CONFIG, config)
 
@@ -89,23 +87,16 @@ const process = (html, step) => {
   /* Track current number of indentations needed */
   let indents = ''
 
-  console.log('processing', html)
-  console.log('convert line', convert.line)
-
   /* Process lines and indent. */
   convert.line.forEach((source, index) => {
-    console.log('current line is', source, index)
     html = html
       .replace(/\n+/g, '\n') /* Replace consecutive line returns with singles */
       .replace(`[#-# : ${index} : ${source} : #-#]`, (match) => {
         let subtrahend = 0
-        console.log('matched', match)
         const prevLine = `[#-# : ${index - 1} : ${convert.line[index - 1]} : #-#]`
-        console.log('previous line for index', index, prevLine)
+
         /**
          * Arbitratry character, to keep track of the string's length.
-         * 
-         * TODO - Replace this mechanism, if possible.
          */
         indents += '0'
         
@@ -131,7 +122,6 @@ const process = (html, step) => {
 
         /* Adjust for the next round. */
         indents = indents.substring(0, offset)
-        console.log('data for index', index, indents, subtrahend, offset)
 
         /* Remove the prefix and suffix, leaving the content. */
         const result = match
@@ -145,10 +135,7 @@ const process = (html, step) => {
 
   /* Remove line returns, tabs, and consecutive spaces within html elements or their content. */
   html = html.replace(/>[^<]*?[^><\/\s][^<]*?<\/|>\s+[^><\s]|<script[^>]*>\s+<\/script>|<(\w+)>\s+<\/(\w+)|<(\w+)[^>]*>\s<\/(\w+)>|<([\w\-]+)[^>]*[^\/]>\s+<\/([\w\-]+)>/g,
-    (match) => {
-      console.log('removed stuff', match)
-      return match.replace(/\n|\t|\s{2,}/g, '')
-    }
+    match => match.replace(/\n|\t|\s{2,}/g, '')
   )
 
   return html.substring(1, html.length - 1)
@@ -162,7 +149,6 @@ const process = (html, step) => {
  * @returns {string}
  */
 export const prettify = (html, config) => {
-  console.log('tab is', config.tab_size)
   const validated_config = validateConfig(config)
 
   html = preprocess(html)

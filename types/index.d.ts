@@ -22,7 +22,7 @@ declare module 'fnhtml' {
    * @returns An HTML string where entities are enforced on the contents of textareas.
    * @example <textarea>3 > 2</textarea> => <textarea>3 &gt; 2</textarea>
    */
-  export function entify(html: string, include_content?: boolean): string
+  export function entify(html: string, minify_content?: boolean): string
 
   /**
    * Creates a single-line HTML string

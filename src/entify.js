@@ -13,7 +13,7 @@ import { minifyTextareaContent } from "./specials"
 export const entify = (html, minify_content = false) => {
   if (minify_content) html = minifyTextareaContent(html)
 
-  html = html.replace(/<textarea[^>]*>((.|\n)*?)<\/textarea>/g, (match, capture) => {
+  return html.replace(/<textarea[^>]*>((.|\n)*?)<\/textarea>/g, (match, capture) => {
     return match.replace(capture, (match) => {
       return match
         .replace(/</g, '&lt;')
@@ -28,6 +28,4 @@ export const entify = (html, minify_content = false) => {
         .replace(/\s/g, '&nbsp;')
     })
   })
-
-  return html
 }
