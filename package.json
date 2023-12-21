@@ -3,7 +3,8 @@
 	"version": "0.0.0",
 	"description": "Functions to format HTML.",
 	"scripts": {
-		"check": "tsc"
+		"check": "tsc",
+		"test": "bun index.js"
 	},
 	"exports": {
 		".": {
@@ -22,11 +23,11 @@
 	"type": "module",
 	"repository": {
     "type": "git",
-    "url": "git+https://github.com/j4w8n/htmlpm.git"
+    "url": "git+https://github.com/j4w8n/fnhtml.git"
   },
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/j4w8n/htmlpm/issues"
+    "url": "https://github.com/j4w8n/fnhtml/issues"
   },
-  "homepage": "https://github.com/j4w8n/htmlpm#readme"
+  "homepage": "https://github.com/j4w8n/fnhtml#readme"
 }
