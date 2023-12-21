@@ -1,7 +1,5 @@
 /**
- * Format textarea content, including enforcement of entities.
- * 
- * TODO - move textarea minify to minify.js
+ * Enforcement entity characters for textarea content.
  * 
  * @param {string} html
  * @returns {string}
@@ -9,19 +7,9 @@
  */
 export const entify = (html) => {
   /**
-   * Within textarea content, trim the following:
-   * - leading line return plus any number of spaces
-   * - multiple leading line returns, even if no spaces
-   * - multiple combos of line return + spaces
-   * 
-   * Does not trim lone leading spaces, nor a single line return.
+   * Match an entire textarea element and replace relevant characters
+   * with their entity equivalents.
    */
-  html = html.replace(/(<textarea[^>]*>)\n\s+/g, '$1')
-
-  /* Within textarea content, trim trailing spaces */
-  html = html.replace(/\s+<\/textarea>/g, '</textarea>')
-
-  /* Match an entire textarea element and entify relevant characters. */
   html = html.replace(/<textarea[^>]*>((.|\n)*?)<\/textarea>/g, (match, capture) => {
     return match.replace(capture, (match) => {
       return match

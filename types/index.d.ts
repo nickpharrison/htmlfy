@@ -13,7 +13,7 @@ declare module 'fnhtml' {
   export function closify(html: string): string
 
   /**
-   * Format textarea content, including enforcement of entities.
+   * Enforcement entity characters for textarea content.
    * 
    * @param {string} html
    * @returns An HTML string where entities are enforced on the contents of textareas.
