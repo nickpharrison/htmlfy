@@ -18,7 +18,8 @@ export const minify = (html) => {
 
   /* Within textarea content, trim trailing spaces */
   html = html.replace(/\s+<\/textarea>/g, '</textarea>')
-  
+
+  /* All other minification */
   return html
     .replace(/\n|\t/g, '')
     .replace(/[a-z]+="\s*"/ig, '')

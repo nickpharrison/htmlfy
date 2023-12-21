@@ -6,10 +6,6 @@
  * @example <textarea>3 > 2</textarea> => <textarea>3 &gt; 2</textarea>
  */
 export const entify = (html) => {
-  /**
-   * Match an entire textarea element and replace relevant characters
-   * with their entity equivalents.
-   */
   html = html.replace(/<textarea[^>]*>((.|\n)*?)<\/textarea>/g, (match, capture) => {
     return match.replace(capture, (match) => {
       return match
