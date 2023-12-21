@@ -25,7 +25,6 @@ export const entify = (html, minify_content = false) => {
         .replace(/%/g, '&#37;')
         .replace(/\{/g, '&#123;')
         .replace(/\}/g, '&#125;')
-        .replace(/\s/g, '&nbsp;')
     })
   })
 }
