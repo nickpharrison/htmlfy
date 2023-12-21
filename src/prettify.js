@@ -1,4 +1,5 @@
-import { specials } from './specials.js'
+import { closify } from './closify.js'
+import { entify } from './entify.js'
 import { minify } from './minify.js'
 import { mergeConfig } from './utils.js'
 
@@ -42,12 +43,12 @@ const convert = {
 /**
  * Isolate tags, content, and comments.
  * 
+ * @param {string} html
+ * @returns {string}
  * @example <div>Hello World!</div> => 
  *  [#-# : 0 : <div> : #-#]
  *  Hello World!
  *  [#-# : 1 : </div> : #-#]
- * @param {string} html
- * @returns {string}
  */
 const enqueue = (html) => {
   convert.line = []
@@ -70,7 +71,8 @@ const enqueue = (html) => {
  * @returns {string}
  */
 const preprocess = (html) => {
-  html = specials(html)
+  html = closify(html)
+  html = entify(html)
   html = minify(html)
   html = enqueue(html)
 

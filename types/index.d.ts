@@ -4,6 +4,15 @@ declare module 'fnhtml' {
   }
 
   /**
+   * Ensure void elements are "self-closing".
+   *
+   * @param {string} html The HTML string to evaluate.
+   * @returns An HTML string where void elements are formatted as self-closing.
+   * @example <br> => <br />
+   */
+  export function closify(html: string): string
+
+  /**
    * Creates a single-line HTML string
    * by removing line returns, tabs, and relevant spaces.
    * 
