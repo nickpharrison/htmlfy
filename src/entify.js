@@ -1,4 +1,4 @@
-import { minifyTextareaContent } from "./specials"
+import { minifyLeadingAndTrailingTextareaContent } from "./specials"
 
 /**
  * Enforce entity characters for textarea content.
@@ -11,9 +11,13 @@ import { minifyTextareaContent } from "./specials"
  * @example <textarea>3 > 2</textarea> => <textarea>3 &gt; 2</textarea>
  */
 export const entify = (html, minify_content = false) => {
-  if (minify_content) html = minifyTextareaContent(html)
+  html = minifyLeadingAndTrailingTextareaContent(html)
 
-  return html.replace(/<textarea[^>]*>((.|\n)*?)<\/textarea>/g, (match, capture) => {
+  /** 
+   * Protect entities, inside the textarea content,
+   * from general minification.
+   */
+  html = html.replace(/<textarea[^>]*>((.|\n)*?)<\/textarea>/g, (match, capture) => {
     return match.replace(capture, (match) => {
       return match
         .replace(/</g, '&lt;')
@@ -27,4 +31,30 @@ export const entify = (html, minify_content = false) => {
         .replace(/\}/g, '&#125;')
     })
   })
+
+  /* Typical minification, but only for textareas. */
+  if (minify_content) {
+    html = html.replace(/<textarea[^>]*>((.|\n)*?)<\/textarea>/g, (match, capture) => {
+      /* Replace things inside the textarea content. */
+      match = match.replace(capture, (match) => {
+        return match
+          .replace(/\n|\t/g, '')
+          .replace(/[a-z]+="\s*"/ig, '')
+          .replace(/>\s+</g, '><')
+          .replace(/\s+/g, ' ')
+      })
+
+      /* Replace things in the entire element */
+      match = match
+        .replace(/\s+/g, ' ')
+        .replace(/\s>/g, '>')
+        .replace(/>\s/g, '>')
+        .replace(/\s</g, '<')
+        .replace(/class=["']\s/g, (match) => match.replace(/\s/g, ''))
+        .replace(/(class=.*)\s(["'])/g, '$1'+'$2')
+      return match
+    })
+  }
+
+  return html
 }

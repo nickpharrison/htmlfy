@@ -1,4 +1,4 @@
-import { minifyTextareaContent } from "./specials"
+import { entify } from "./entify"
 
 /**
  * Creates a single-line HTML string
@@ -8,7 +8,11 @@ import { minifyTextareaContent } from "./specials"
  * @returns A minified HTML string.
  */
 export const minify = (html) => {
-  html = minifyTextareaContent(html)
+  /**
+   * Ensure textarea content is specially minified and protected
+   * before general minification.
+   */
+  html = entify(html)
 
   /* All other minification. */
   return html
@@ -20,4 +24,5 @@ export const minify = (html) => {
     .replace(/>\s/g, '>')
     .replace(/\s</g, '<')
     .replace(/class=["']\s/g, (match) => match.replace(/\s/g, ''))
+    .replace(/(class=.*)\s(["'])/g, '$1'+'$2')
 }
