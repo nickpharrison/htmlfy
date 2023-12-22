@@ -116,7 +116,7 @@ const process = (html, step) => {
  * Format HTML with line returns and indentations.
  * 
  * @param {string} html 
- * @param {import('fnhtml').Config} [config]
+ * @param {import('htmlfy').Config} [config]
  * @returns {string}
  */
 export const prettify = (html, config) => {

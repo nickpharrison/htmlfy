@@ -1,4 +1,4 @@
-declare module 'fnhtml' {
+declare module 'htmlfy' {
   export interface Config {
     tab_size?: number
   }

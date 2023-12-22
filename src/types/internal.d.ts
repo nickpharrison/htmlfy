@@ -1,4 +1,4 @@
-import { Config } from "fnhtml"
+import { Config } from "htmlfy"
 
 export interface DefaultConfig {
 	tab_size: number
