@@ -1,7 +1,7 @@
 {
 	"name": "fnhtml",
 	"version": "0.0.0",
-	"description": "Functions to format HTML.",
+	"description": "Functions to format HTML. Prettify, minify, and more!",
 	"scripts": {
 		"check": "tsc",
 		"test": "bun index.js"
