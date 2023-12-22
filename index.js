@@ -56,7 +56,9 @@ const phtml = `<form id="3">
 <textarea>Did you know that 3 &gt; 2?&#13;&#13;This is another paragraph.</textarea>
 <textarea class="more stuff"></textarea>`
 
-const chtml = `<br><input><br><input>`
+const chtml = `<form id="3">
+<!-- This is a comment. -->
+<!-- This is a second comment. --><br><input><br><input>`
 
 const prettified_html = prettify(uhtml)
 const entified_html = entify(ehtml, true)
