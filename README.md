@@ -58,16 +58,10 @@ Ensure void elements are "self-closing".
 ```js
 import { closify } from 'fnhtml'
 
-const html = `<main class="hello there world"><div>Welcome to fnhtml!</div><br><input type="text"></main>`
+const html = `<br><input type="text">`
 console.log(closify(html))
 /*
-<main class="hello there world">
-  <div>
-    Welcome to fnhtml!
-  </div>
-  <br />
-  <input type="text" />
-</main>
+<br /><input type="text" />
 */
 ```
 
