@@ -21,6 +21,7 @@ export const minify = (html) => {
     .replace(/>\s+</g, '><')
     .replace(/\s+/g, ' ')
     .replace(/\s>/g, '>')
+    .replace(/<\s\//g, '</')
     .replace(/>\s/g, '>')
     .replace(/\s</g, '<')
     .replace(/class=["']\s/g, (match) => match.replace(/\s/g, ''))
