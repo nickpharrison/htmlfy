@@ -1,4 +1,4 @@
-import { minifyLeadingAndTrailingTextareaContent } from "./specials"
+import { minifyLeadingAndTrailingTextareaContent } from "./specials.js"
 
 /**
  * Enforce entity characters for textarea content.

@@ -1,4 +1,4 @@
-import { entify } from "./entify"
+import { entify } from "./entify.js"
 
 /**
  * Creates a single-line HTML string
