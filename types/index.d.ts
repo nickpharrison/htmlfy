@@ -14,9 +14,11 @@ declare module 'fnhtml' {
 
   /**
    * Enforcement entity characters for textarea content.
+   * By default, this also does basic minification before setting entities.
+   * For full minification, pass `minify_content` as `true`.
    * 
    * @param {string} html
-   * @param {boolean} [minify_content] Minifies the content of textarea elements. 
+   * @param {boolean} [minify_content] Fully minifies the content of textarea elements. 
    * Defaults to `false`. Consider setting this to `true` if you're running `entify()` 
    * as a standalone function.
    * @returns An HTML string where entities are enforced on the contents of textareas.
