@@ -2,7 +2,7 @@ import { closify } from './closify.js'
 import { entify } from './entify.js'
 import { minify } from './minify.js'
 import { validateConfig } from './utils.js'
-import { CONFIG } from './config.js'
+import { CONFIG } from './constants.js'
 
 /**
  * @type {{ line: string[] }}
