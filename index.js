@@ -14,12 +14,14 @@ title="We need your email for verification." name="email" required><!--    This 
 <input id="fruits-1-1" type="checkbox" name="fruits" value="grapes">
 <label for="fruits-1-1">Grapes</label><br></fieldset>     
 
-</form><textarea  >  
+</form><textarea  >
 
-  
-Did   you know that 3 >   2?
+  Did   you know that 3 >   2?
 
-This is another paragraph.   </textarea><textarea class="  more  stuff  ">    </textarea>`
+This is another paragraph.   
+
+
+ </textarea><textarea class="  more  stuff  ">    </textarea>`
 
 const stuff = prettify(html)
 //const stuff = entify(html, true)
