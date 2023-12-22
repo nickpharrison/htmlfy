@@ -1,35 +1,8 @@
 import { closify } from './closify.js'
 import { entify } from './entify.js'
 import { minify } from './minify.js'
-import { mergeConfig } from './utils.js'
-
-/**
- * @type {import('types').DefaultConfig}
- */
-const CONFIG = {
-  tab_size: 2
-}
-
-/**
- * Validate any passed-in config options and merge with CONFIG.
- * 
- * @param {import('fnhtml').Config} config
- * @returns {import('types').ValidatedConfig}
- */
-const validateConfig = (config) => {
-  let tab_size = config.tab_size
-
-  if (!tab_size) return CONFIG
-
-  tab_size = Math.floor(tab_size)
-  
-  if (tab_size < 1 || tab_size > 16) throw 'Tab size out of range. Expecting 1 to 16.'
-  
-  config.tab_size = tab_size
-
-  return mergeConfig(CONFIG, config)
-
-}
+import { validateConfig } from './utils.js'
+import { CONFIG } from './config.js'
 
 /**
  * @type {{ line: string[] }}

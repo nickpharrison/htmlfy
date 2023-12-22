@@ -1,3 +1,5 @@
+import { CONFIG } from './config'
+
 /**
  * Generic utility which merges two objects.
  * 
@@ -38,4 +40,25 @@ export const mergeConfig = (dconfig, config) => {
    * otherwise we end up altering the original `CONFIG` because `dconfig` is a reference to it.
    */
   return mergeObjects(structuredClone(dconfig), config)
+}
+
+/**
+ * Validate any passed-in config options and merge with CONFIG.
+ * 
+ * @param {import('fnhtml').Config} config
+ * @returns {import('types').ValidatedConfig}
+ */
+export const validateConfig = (config) => {
+  let tab_size = config.tab_size
+
+  if (!tab_size) return CONFIG
+
+  tab_size = Math.floor(tab_size)
+  
+  if (tab_size < 1 || tab_size > 16) throw 'Tab size out of range. Expecting 1 to 16.'
+  
+  config.tab_size = tab_size
+
+  return mergeConfig(CONFIG, config)
+
 }
