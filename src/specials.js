@@ -13,8 +13,9 @@ export const minifyLeadingAndTrailingTextareaContent = (html) => {
    * - multiple leading line returns, even if no spaces
    * - multiple combos of line return and spaces
    */
-  html = html.replace(/(<textarea[^>]*>)\n\s+/g, '$1')
-  html = html.replace(/(<textarea[^>]*>)\s+\n/g, '$1')
+  html = html
+    .replace(/(<textarea[^>]*>)\n\s+/g, '$1')
+    .replace(/(<textarea[^>]*>)\s+\n/g, '$1')
 
   /* Trim trailing spaces */
   html = html.replace(/\s+<\/textarea>/g, '</textarea>')
