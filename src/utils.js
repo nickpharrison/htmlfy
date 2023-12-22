@@ -50,11 +50,16 @@ export const mergeConfig = (dconfig, config) => {
  */
 export const validateConfig = (config) => {
   let tab_size = config.tab_size
-
   if (!tab_size) return CONFIG
 
+  const safe = Number.isSafeInteger(tab_size)
+  if (!safe) throw `Tab size ${tab_size} is not safe. See https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number/isSafeInteger for more info.`
+
+  /** 
+   * Round down, just in case a safe floating point,
+   * like 4.0, was passed.
+   */
   tab_size = Math.floor(tab_size)
-  
   if (tab_size < 1 || tab_size > 16) throw 'Tab size out of range. Expecting 1 to 16.'
   
   config.tab_size = tab_size
