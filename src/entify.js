@@ -1,5 +1,3 @@
-import { minifyLeadingAndTrailingTextareaContent } from "./specials.js"
-
 /**
  * Enforce entity characters for textarea content.
  * By default, this also does basic minification before setting entities.
@@ -13,7 +11,14 @@ import { minifyLeadingAndTrailingTextareaContent } from "./specials.js"
  * @example <textarea>3 > 2</textarea> => <textarea>3 &gt; 2</textarea>
  */
 export const entify = (html, minify_content = false) => {
-  html = minifyLeadingAndTrailingTextareaContent(html)
+  /* Trim any combination of leading line returns and/or spaces. */
+  html = html
+    .replace(/(<textarea[^>]*>)\n+/g, '$1')
+    .replace(/(<textarea[^>]*>)\n\s+/g, '$1')
+    .replace(/(<textarea[^>]*>)\s+\n/g, '$1')
+
+  /* Trim trailing spaces */
+  html = html.replace(/\s+<\/textarea>/g, '</textarea>')
 
   /** 
    * Protect entities, inside the textarea content,
