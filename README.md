@@ -53,7 +53,7 @@ console.log(minify(html))
 ```
 
 ### Closify
-Ensure void elements are "self-closing".
+Ensure [void elements](https://developer.mozilla.org/en-US/docs/Glossary/Void_element) are "self-closing".
 
 ```js
 import { closify } from 'fnhtml'
