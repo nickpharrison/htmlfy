@@ -6,14 +6,10 @@
  */
 export const minifyLeadingAndTrailingTextareaContent = (html) => {
   /**
-   * Trim the following:
-   * - leading line return
-   * - leading line return + spaces
-   * - leading spaces + line return(s) + spaces
-   * - multiple leading line returns, even if no spaces
-   * - multiple combos of line return and spaces
+   * Trim any combination of leading line returns and/or spaces
    */
   html = html
+    .replace(/(<textarea[^>]*>)\n+/g, '$1')
     .replace(/(<textarea[^>]*>)\n\s+/g, '$1')
     .replace(/(<textarea[^>]*>)\s+\n/g, '$1')
 
