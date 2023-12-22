@@ -40,5 +40,5 @@ declare module 'fnhtml' {
    * @param config A configuration object.
    * @returns A well-formed HTML string.
    */
-  export function prettify(html: string, config: Config): string
+  export function prettify(html: string, config?: Config): string
 }

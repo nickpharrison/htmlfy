@@ -145,11 +145,11 @@ const process = (html, step) => {
  * Format HTML with line returns and indentations.
  * 
  * @param {string} html 
- * @param {import('fnhtml').Config} config
+ * @param {import('fnhtml').Config} [config]
  * @returns {string}
  */
 export const prettify = (html, config) => {
-  const validated_config = validateConfig(config)
+  const validated_config = config ? validateConfig(config) : CONFIG
 
   html = preprocess(html)
   html = process(html, validated_config.tab_size)
