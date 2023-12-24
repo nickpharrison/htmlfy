@@ -52,9 +52,10 @@ const phtml = `<form id="3">
   <label for="fruits-1-1">Grapes</label>
   <br />
 </fieldset>
-</form>
 <textarea>Did you know that 3 &gt; 2?&#13;&#13;This is another paragraph.</textarea>
-<textarea class="more stuff"></textarea>`
+<textarea class="more stuff"></textarea>
+<br>
+</form>`
 
 const chtml = `<form id="3">
 <!-- This is a comment. -->
