@@ -15,15 +15,16 @@ title="We need your email for verification." name="email" required><!--    This 
 <label for="fruits-1-0"  >Apples<  /label><br><div><!--      This is an embedded comment. --></div>
 <input id="fruits-1-1" type="checkbox" name="fruits" value="grapes">
 <label for="fruits-1-1">Grapes</label><br></fieldset>     
-
-</form><textarea  >
+<textarea  >
 
   Did   you know that 3 >   2?
 
 This is another paragraph.   
 
 
- </textarea><textarea class="  more  stuff  ">    </textarea>`
+ </textarea><textarea class="  more  stuff  ">    </textarea>
+<br>
+</form>`
 
 const ehtml = `<textarea  >
 
@@ -52,9 +53,10 @@ const phtml = `<form id="3">
   <label for="fruits-1-1">Grapes</label>
   <br />
 </fieldset>
-</form>
 <textarea>Did you know that 3 &gt; 2?&#13;&#13;This is another paragraph.</textarea>
-<textarea class="more stuff"></textarea>`
+<textarea class="more stuff"></textarea>
+<br>
+</form>`
 
 const chtml = `<form id="3">
 <!-- This is a comment. -->
