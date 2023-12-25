@@ -88,7 +88,7 @@ console.log(entify(html, true))
 If needed, you can use a default import for `htmlfy`.
 
 ```js
-import * as htmfy from 'htmlfy'
+import * as htmlfy from 'htmlfy'
 
 console.log(htmlfy.prettify('<main><div>Hello World</div></main'))
 ```
