@@ -84,6 +84,15 @@ console.log(entify(html, true))
 */
 ```
 
+### Default Import
+If needed, you can use a default import for `htmlfy`.
+
+```js
+import * as htmfy from 'htmlfy'
+
+console.log(htmlfy.prettify('<main><div>Hello World</div></main'))
+```
+
 ## Configuration
 Default config:
 ```js
