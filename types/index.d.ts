@@ -1,5 +1,6 @@
 declare module 'htmlfy' {
   export interface Config {
+    strict?: boolean
     tab_size?: number
   }
 

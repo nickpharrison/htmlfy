@@ -19,7 +19,7 @@ const mergeObjects = (current, updates) => {
     if (typeof updates[key] !== 'object') {
       merged[key] = updates[key]
     } else {
-      /* key is an object, run mergeObjects again */
+      /* key is an object, run mergeObjects again. */
       merged[key] = mergeObjects(merged[key] || {}, updates[key])
     }
   }
@@ -51,12 +51,13 @@ export const mergeConfig = (dconfig, config) => {
 export const validateConfig = (config) => {
   if (typeof config !== 'object') throw 'Config must be an object.'
 
-  const config_empty = !(Object.hasOwn(config, 'tab_size'))
+  const config_empty = !(Object.hasOwn(config, 'tab_size') || Object.hasOwn(config, 'strict'))
   if (config_empty) return CONFIG
 
   let tab_size = config.tab_size
 
   if (tab_size) {
+    if (typeof tab_size !== 'number') throw 'Tab size must be a number.'
     const safe = Number.isSafeInteger(tab_size)
     if (!safe) throw `Tab size ${tab_size} is not safe. See https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number/isSafeInteger for more info.`
 
@@ -69,6 +70,8 @@ export const validateConfig = (config) => {
   
     config.tab_size = tab_size
   }
+
+  if (Object.hasOwn(config, 'strict') && typeof config.strict !== 'boolean') throw 'Strict config must be a boolean.' 
 
   return mergeConfig(CONFIG, config)
 

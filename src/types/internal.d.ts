@@ -1,6 +1,7 @@
 import { Config } from "htmlfy"
 
 export interface DefaultConfig {
+	strict: boolean
 	tab_size: number
 }
 

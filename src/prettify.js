@@ -4,6 +4,11 @@ import { validateConfig } from './utils.js'
 import { CONFIG } from './constants.js'
 
 /**
+ * @type {boolean}
+ */
+let strict
+
+/**
  * @type {{ line: string[] }}
  */
 const convert = {
@@ -55,13 +60,13 @@ const preprocess = (html) => {
  * @returns {string}
  */
 const process = (html, step) => {
-  /* Track current number of indentations needed */
+  /* Track current number of indentations needed. */
   let indents = ''
 
   /* Process lines and indent. */
   convert.line.forEach((source, index) => {
     html = html
-      .replace(/\n+/g, '\n') /* Replace consecutive line returns with singles */
+      .replace(/\n+/g, '\n') /* Replace consecutive line returns with singles. */
       .replace(`[#-# : ${index} : ${source} : #-#]`, (match) => {
         let subtrahend = 0
         const prevLine = `[#-# : ${index - 1} : ${convert.line[index - 1]} : #-#]`
@@ -94,6 +99,9 @@ const process = (html, step) => {
         /* Adjust for the next round. */
         indents = indents.substring(0, offset)
 
+        /* Remove comment. */
+        if (strict && match.indexOf('<!--') > -1) return ''
+
         /* Remove the prefix and suffix, leaving the content. */
         const result = match
           .replace(`[#-# : ${index} : `, '')
@@ -109,6 +117,9 @@ const process = (html, step) => {
     match => match.replace(/\n|\t|\s{2,}/g, '')
   )
 
+  /* Remove self-closing nature of void elements. */
+  if (strict) html = html.replace(/\s\/>/g, '>')
+
   return html.substring(1, html.length - 1)
 }
 
@@ -121,6 +132,7 @@ const process = (html, step) => {
  */
 export const prettify = (html, config) => {
   const validated_config = config ? validateConfig(config) : CONFIG
+  strict = validated_config.strict
 
   html = preprocess(html)
   html = process(html, validated_config.tab_size)
