@@ -97,8 +97,25 @@ console.log(htmlfy.prettify('<main><div>Hello World</div></main'))
 Default config:
 ```js
 {
+  strict: false,
   tab_size: 2
 }
+```
+
+### Strict
+If set to `true`, removes comments and ensures void elements are not self-closing.
+
+```js
+import { prettify } from 'htmlfy'
+
+const html = `<main><br /><div><!-- Hello World --></div></main>`
+console.log(prettify(html, { strict: true }))
+/*
+<main>
+  <br>
+  <div></div>
+</main>
+*/
 ```
 
 ### Tab Size
