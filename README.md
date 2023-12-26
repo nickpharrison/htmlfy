@@ -4,9 +4,9 @@ HTML formatter yo! Prettify, minify and more!
 `htmlfy` is a fork of [html-formatter](https://github.com/uznam8x/html-formatter/tree/master). Most of the processing logic has been preserved, and full credit for that goes to the original author. I've made the following major enhancements.
 
 - Fully typed.
-- Converted to ES6.
-- Optional "tab" sizes to prettify the HTML.
-- A lot of naming changes for functions, etc.
+- Converted to ESM.
+- Configuration options.
+- A lot of naming changes.
 
 ## Install
 
@@ -16,8 +16,6 @@ HTML formatter yo! Prettify, minify and more!
 
 ### Prettify
 Turn single-line or ugly HTML into highly formatted HTML. This is a wrapper for all other functions, and then it adds indentation.
-
-See [configuration](#configuration) for adjusting the tab size.
 
 ```js
 import { prettify } from 'htmlfy'
@@ -65,7 +63,7 @@ console.log(closify(html))
 ```
 
 ### Entify
-Enforce entity characters for textarea content. By default, this performs basic minification on textareas before setting entities. When running this function as a standalone, you'll likely want to pass `minify_content` as `true` for full minification of the textarea. It does not process any other tags.
+Enforce entity characters for textarea content. This also performs basic minification on textareas before setting entities. When running this function as a standalone, you'll likely want to pass `minify` as `true` for full minification of the textarea. The minification does not process any other tags.
 
 ```js
 import { entify } from 'htmlfy'
@@ -94,6 +92,8 @@ console.log(htmlfy.prettify('<main><div>Hello World</div></main'))
 ```
 
 ## Configuration
+These configuration options can only be passed to `prettify`.
+
 Default config:
 ```js
 {
@@ -119,7 +119,7 @@ console.log(prettify(html, { strict: true }))
 ```
 
 ### Tab Size
-`prettify` indents text using spaces. If you'd like to custom this, pass a configuration object as the second argument.
+Determines the number of spaces, per tab, for indentation.
 
 ```js
 import { prettify } from 'htmlfy'
