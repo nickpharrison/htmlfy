@@ -4,13 +4,13 @@
  * For full minification, pass `minify_content` as `true`.
  * 
  * @param {string} html
- * @param {boolean} [minify_content] Fully minifies the content of textarea elements. 
- * Defaults to `false`. Consider setting this to `true` if you're running `entify()` 
+ * @param {boolean} [minify] Fully minifies the content of textarea elements. 
+ * Defaults to `false`. We recommend a value of `true` if you're running `entify()` 
  * as a standalone function.
  * @returns {string}
  * @example <textarea>3 > 2</textarea> => <textarea>3 &gt; 2</textarea>
  */
-export const entify = (html, minify_content = false) => {
+export const entify = (html, minify = false) => {
   /* Trim any combination of leading line returns and/or spaces. */
   html = html
     .replace(/(<textarea[^>]*>)\n+/g, '$1')
@@ -40,7 +40,7 @@ export const entify = (html, minify_content = false) => {
   })
 
   /* Typical minification, but only for textareas. */
-  if (minify_content) {
+  if (minify) {
     html = html.replace(/<textarea[^>]*>((.|\n)*?)<\/textarea>/g, (match, capture) => {
       /* Replace things inside the textarea content. */
       match = match.replace(capture, (match) => {
