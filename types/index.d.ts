@@ -16,7 +16,7 @@ declare module 'htmlfy' {
   /**
    * Enforce entity characters for textarea content.
    * By default, this also does basic minification before setting entities.
-   * For full minification, pass `minify_content` as `true`.
+   * For full minification, pass `minify` as `true`.
    * 
    * @param {string} html
    * @param {boolean} [minify] Fully minifies the content of textarea elements. 
