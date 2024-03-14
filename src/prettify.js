@@ -120,7 +120,17 @@ const process = (html, step) => {
   /* Remove self-closing nature of void elements. */
   if (strict) html = html.replace(/\s\/>/g, '>')
 
-  return html.substring(1, html.length - 1)
+  const lead_newline_check = html.substring(0, 1)
+  const tail_newline_check = html.substring(html.length - 1)
+
+  /**
+   * Remove single leading and trailing new line, if they exist.
+   * These will be `false` if the "html" being processed is only plain text. 
+   */
+  if (lead_newline_check === '\n') html = html.substring(1, html.length)
+  if (tail_newline_check === '\n') html = html.substring(0, html.length - 1)
+
+  return html
 }
 
 /**
