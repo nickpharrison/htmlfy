@@ -1,13 +1,18 @@
 import { entify } from "./entify.js"
+import { hasHtml } from "./utils.js"
 
 /**
  * Creates a single-line HTML string
  * by removing line returns, tabs, and relevant spaces.
  * 
  * @param {string} html
+ * @param {boolean} html_check Check to see if the content contains any HTML, before processing.
  * @returns A minified HTML string.
  */
-export const minify = (html) => {
+export const minify = (html, html_check = true) => {
+  if (html_check)
+    if (!hasHtml(html)) return html
+
   /**
    * Ensure textarea content is specially minified and protected
    * before general minification.

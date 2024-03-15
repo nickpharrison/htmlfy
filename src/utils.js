@@ -1,6 +1,16 @@
 import { CONFIG } from './constants.js'
 
 /**
+ * Checks if content contains at least one HTML element.
+ * 
+ * @param {string} content
+ */
+export const hasHtml = (content) => {
+  const regex = /<[A-Za-z]+[^>]*>(?:.|\n)*?<\/{1}[A-Za-z]+[^>]*>/
+  return regex.test(content)
+}
+
+/**
  * Generic utility which merges two objects.
  * 
  * @param {any} current
