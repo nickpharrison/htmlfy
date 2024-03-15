@@ -9,7 +9,7 @@ const void_elements = [
 /**
  * Ensure void elements are "self-closing".
  * 
- * @param {string} html
+ * @param {string} html The HTML string to evaluate.
  * @param {boolean} html_check Check to see if the content contains any HTML, before processing.
  * @returns {string}
  * @example <br> => <br />

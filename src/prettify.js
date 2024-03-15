@@ -18,7 +18,7 @@ const convert = {
 /**
  * Isolate tags, content, and comments.
  * 
- * @param {string} html
+ * @param {string} html The HTML string to evaluate.
  * @returns {string}
  * @example <div>Hello World!</div> => 
  *  [#-# : 0 : <div> : #-#]
@@ -42,7 +42,7 @@ const enqueue = (html) => {
 /**
  * Preprocess the HTML.
  * 
- * @param {string} html
+ * @param {string} html The HTML string to preprocess.
  * @returns {string}
  */
 const preprocess = (html) => {
@@ -55,7 +55,7 @@ const preprocess = (html) => {
 
 /**
  * 
- * @param {string} html 
+ * @param {string} html The HTML string to process.
  * @param {number} step 
  * @returns {string}
  */
@@ -136,9 +136,9 @@ const process = (html, step) => {
 /**
  * Format HTML with line returns and indentations.
  * 
- * @param {string} html 
- * @param {import('htmlfy').Config} [config]
- * @returns {string}
+ * @param {string} html The HTML string to prettify.
+ * @param {import('htmlfy').Config} [config] A configuration object.
+ * @returns {string} A well-formed HTML string.
  */
 export const prettify = (html, config) => {
   const validated_config = config ? validateConfig(config) : CONFIG

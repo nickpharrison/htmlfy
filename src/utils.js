@@ -3,7 +3,8 @@ import { CONFIG } from './constants.js'
 /**
  * Checks if content contains at least one HTML element.
  * 
- * @param {string} content
+ * @param {string} content Content to evaluate.
+ * @returns {boolean} A boolean.
  */
 export const hasHtml = (content) => {
   const regex = /<[A-Za-z]+[^>]*>(?:.|\n)*?<\/{1}[A-Za-z]+[^>]*>/
@@ -13,8 +14,8 @@ export const hasHtml = (content) => {
 /**
  * Generic utility which merges two objects.
  * 
- * @param {any} current
- * @param {any} updates
+ * @param {any} current Original object.
+ * @param {any} updates Object to merge with original.
  * @returns {any}
  */
 const mergeObjects = (current, updates) => {
@@ -55,8 +56,8 @@ export const mergeConfig = (dconfig, config) => {
 /**
  * Validate any passed-in config options and merge with CONFIG.
  * 
- * @param {import('htmlfy').Config} config
- * @returns {import('types').ValidatedConfig}
+ * @param {import('htmlfy').Config} config A user config.
+ * @returns {import('types').ValidatedConfig} A validated config.
  */
 export const validateConfig = (config) => {
   if (typeof config !== 'object') throw 'Config must be an object.'

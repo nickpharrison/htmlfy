@@ -19,7 +19,7 @@ declare module 'htmlfy' {
    * By default, this also does basic minification before setting entities.
    * For full minification, pass `minify` as `true`.
    * 
-   * @param {string} html
+   * @param {string} html The HTML string to evaluate.
    * @param {boolean} [minify] Fully minifies the content of textarea elements. 
    * Defaults to `false`. We recommend a value of `true` if you're running `entify()` 
    * as a standalone function.
@@ -32,7 +32,7 @@ declare module 'htmlfy' {
    * Creates a single-line HTML string
    * by removing line returns, tabs, and relevant spaces.
    * 
-   * @param html The HTML string to minify.
+   * @param {string} html The HTML string to minify.
    * @param {boolean} [html_check] Check to see if the content contains any HTML, before processing. Defaults to `true`.
    * @returns A minified HTML string.
    */
@@ -41,8 +41,8 @@ declare module 'htmlfy' {
   /**
    * Format HTML with line returns and indentations.
    * 
-   * @param html The HTML string to prettify.
-   * @param config A configuration object.
+   * @param {string} html The HTML string to prettify.
+   * @param {Config} [config] A configuration object.
    * @returns A well-formed HTML string.
    */
   export function prettify(html: string, config?: Config): string
