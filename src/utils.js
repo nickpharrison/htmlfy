@@ -7,7 +7,7 @@ import { CONFIG } from './constants.js'
  * @returns {boolean} A boolean.
  */
 export const hasHtml = (content) => {
-  const regex = /<[A-Za-z]+[^>]*>(?:.|\n)*?<\/{1}[A-Za-z]+[^>]*>/
+  const regex = /<(?<Element>[A-Za-z]+\b)[^>]*(?:.|\n)*?<\/{1}\k<Element>>/
   return regex.test(content)
 }
 
