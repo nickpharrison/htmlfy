@@ -1,6 +1,6 @@
 {
 	"name": "htmlfy",
-	"version": "0.1.1",
+	"version": "0.2.0",
 	"description": "HTML formatter yo!. Prettify, minify, and more!",
 	"scripts": {
 		"check": "tsc",
@@ -14,7 +14,7 @@
 	},
 	"files": [
 		"src",
-    "types"
+		"types"
 	],
 	"devDependencies": {
 		"typescript": "^5.0.0"
@@ -22,12 +22,12 @@
 	"types": "types/index.d.ts",
 	"type": "module",
 	"repository": {
-    "type": "git",
-    "url": "git+https://github.com/j4w8n/htmlfy.git"
-  },
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/j4w8n/htmlfy/issues"
-  },
-  "homepage": "https://github.com/j4w8n/htmlfy#readme"
+		"type": "git",
+		"url": "git+https://github.com/j4w8n/htmlfy.git"
+	},
+	"license": "MIT",
+	"bugs": {
+		"url": "https://github.com/j4w8n/htmlfy/issues"
+	},
+	"homepage": "https://github.com/j4w8n/htmlfy#readme"
 }
