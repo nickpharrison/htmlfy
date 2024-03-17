@@ -60,7 +60,7 @@ const phtml = `<form id="3">
 
 const chtml = `<form id="3">
 <!-- This is a comment. -->
-<!-- This is a second comment. --><br><input><br><input>`
+<!-- This is a second comment. --><br><input><br><input></form>`
 
 const prettified_html = prettify(uhtml)
 const entified_html = entify(ehtml, true)
