@@ -1,4 +1,4 @@
-import { hasHtml } from "./utils"
+import { hasHtml } from "./utils.js"
 
 const void_elements = [
   'area', 'base', 'br', 'col', 'embed', 'hr', 
