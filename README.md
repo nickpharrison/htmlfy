@@ -5,14 +5,15 @@ HTML formatter yo! Prettify, minify and more!
 
 - Fully typed.
 - Converted to ESM.
-- Configuration options.
-- A lot of naming changes.
+- Added configuration options.
+- Refactored the code, including naming changes.
 
 ## Install
 
 `npm install htmlfy`
 
 ## API
+Most projects will only need to use `prettify` and/or `minify`.
 
 ### Prettify
 Turn single-line or ugly HTML into highly formatted HTML. This is a wrapper for all other functions, and then it adds indentation.
@@ -50,6 +51,8 @@ console.log(minify(html))
 ```
 
 ### Closify
+> This is done when using prettify, but you can use it in a one-off scenario if needed.
+
 Ensure [void elements](https://developer.mozilla.org/en-US/docs/Glossary/Void_element) are "self-closing".
 
 ```js
@@ -63,6 +66,8 @@ console.log(closify(html))
 ```
 
 ### Entify
+> This is done when using prettify, but you can use it in a one-off scenario if needed.
+
 Enforce entity characters for textarea content. This also performs basic minification on textareas before setting entities. When running this function as a standalone, you'll likely want to pass `minify` as `true` for full minification of the textarea. The minification does not process any other tags.
 
 ```js
@@ -89,6 +94,13 @@ If needed, you can use a default import for `htmlfy`.
 import * as htmlfy from 'htmlfy'
 
 console.log(htmlfy.prettify('<main><div>Hello World</div></main'))
+```
+
+### Common JS Import
+Although meant to be an ESM module, you can import using `require`.
+
+```js
+const { prettify } = require('htmlfy')
 ```
 
 ## Configuration
