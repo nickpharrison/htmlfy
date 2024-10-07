@@ -26,6 +26,7 @@
 		"type": "git",
 		"url": "git+https://github.com/j4w8n/htmlfy.git"
 	},
+	"keywords": [ "HTML", "format", "formatter", "prettier", "minifier", "prettify", "minify" ],
 	"license": "MIT",
 	"bugs": {
 		"url": "https://github.com/j4w8n/htmlfy/issues"
