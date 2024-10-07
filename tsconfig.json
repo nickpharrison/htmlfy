@@ -12,5 +12,5 @@
     "strict": true,
     "target": "esnext"
   },
-  "include": [ "src/**/*", "index.js", "types/index.d.ts" ]
+  "include": [ "src/**/*", "src/tests/all.spec.js", "types/index.d.ts" ]
 }
