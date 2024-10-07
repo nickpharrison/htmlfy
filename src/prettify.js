@@ -1,6 +1,6 @@
 import { closify } from './closify.js'
 import { minify } from './minify.js'
-import { hasHtml, validateConfig } from './utils.js'
+import { isHtml, validateConfig } from './utils.js'
 import { CONFIG } from './constants.js'
 
 /**
@@ -141,11 +141,11 @@ const process = (html, step) => {
  * @returns {string} A well-formed HTML string.
  */
 export const prettify = (html, config) => {
+  /* Return content as-is if it does not contain any HTML elements. */
+  if (!isHtml(html)) return html
+
   const validated_config = config ? validateConfig(config) : CONFIG
   strict = validated_config.strict
-
-  /* Return content as-is if it does not contain any HTML elements. */
-  if (!hasHtml(html)) return html
 
   html = preprocess(html)
   html = process(html, validated_config.tab_size)

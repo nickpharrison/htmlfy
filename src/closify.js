@@ -1,4 +1,4 @@
-import { hasHtml } from "./utils.js"
+import { isHtml } from "./utils.js"
 
 const void_elements = [
   'area', 'base', 'br', 'col', 'embed', 'hr', 
@@ -16,7 +16,7 @@ const void_elements = [
  */
 export const closify = (html, html_check = true) => {
   if (html_check)
-    if (!hasHtml(html)) return html
+    if (!isHtml(html)) return html
   
   return html.replace(/<([a-zA-Z\-0-9]+)[^>]*>/g, (match, name) => {
     if (void_elements.indexOf(name) > -1) {

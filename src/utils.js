@@ -6,7 +6,7 @@ import { CONFIG } from './constants.js'
  * @param {string} content Content to evaluate.
  * @returns {boolean} A boolean.
  */
-export const hasHtml = (content) => {
+export const isHtml = (content) => {
   const regex = /<(?<Element>[A-Za-z]+\b)[^>]*(?:.|\n)*?<\/{1}\k<Element>>/
   return regex.test(content)
 }
