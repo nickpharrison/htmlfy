@@ -64,7 +64,7 @@ const closify_html = `<form id="3">
 
 const config_html = `<form id="3">
 <!-- This is a comment. -->
-<!-- This is a second comment. --><div><br /><input><br /><input><div></form>`
+<!-- This is a second comment. --><div><br /><input /><br /><input /><div></div></div></form>`
 
 
 test('Prettify', () => {
@@ -144,6 +144,7 @@ test('Strict config', () => {
     <input>
     <br>
     <input>
+    <div></div>
   </div>
 </form>`
   )
@@ -159,6 +160,7 @@ test('Tab size config', () => {
         <input />
         <br />
         <input />
+        <div></div>
     </div>
 </form>`
   )
