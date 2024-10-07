@@ -10,7 +10,7 @@
 		".": {
 			"types": "./types/index.d.ts",
 			"import": "./src/exports/index.js",
-      "require": "./src/exports/index.js"
+			"require": "./src/exports/index.js"
 		}
 	},
 	"files": [
