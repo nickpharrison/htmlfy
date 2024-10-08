@@ -1,5 +1,5 @@
 import { entify } from "./entify.js"
-import { hasHtml } from "./utils.js"
+import { isHtml } from "./utils.js"
 
 /**
  * Creates a single-line HTML string
@@ -11,7 +11,7 @@ import { hasHtml } from "./utils.js"
  */
 export const minify = (html, html_check = true) => {
   if (html_check)
-    if (!hasHtml(html)) return html
+    if (!isHtml(html)) return html
 
   /**
    * Ensure textarea content is specially minified and protected
