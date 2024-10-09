@@ -1,7 +1,7 @@
-import { closify } from '../closify.js'
-import { entify } from '../entify.js'
-import { minify } from '../minify.js'
-import { prettify } from '../prettify.js'
+import { closify } from '../src/closify.js'
+import { entify } from '../src/entify.js'
+import { minify } from '../src/minify.js'
+import { prettify } from '../src/prettify.js'
 import { expect, test } from 'vitest'
 
 const ugly_html = `<form id="3"     >     <!-- 
