@@ -36,40 +36,6 @@ This is another paragraph.
 </textarea><textarea class="  more  stuff  ">    </textarea>`
 
 const pretty_html = `<form id="3">
-<!-- This is a comment. -->
-<!-- This is a second comment. -->
-<label for="email-0">What's your email?</label>
-<input id="email-0" type="email" title="We need your email for verification." name="email" required />
-<!-- This is another comment. -->
-<label for="1">What fruits do you like?</label>
-<fieldset id="1">
-  <input id="fruits-1-0" type="checkbox" name="fruits" value="apples" />
-  <label for="fruits-1-0">Apples</label>
-  <br />
-  <div>
-    <!-- This is an embedded comment. -->
-  </div>
-  <input id="fruits-1-1" type="checkbox" name="fruits" value="grapes" />
-  <label for="fruits-1-1">Grapes</label>
-  <br />
-</fieldset>
-<textarea>Did you know that 3 &gt; 2?&#13;&#13;This is another paragraph.</textarea>
-<textarea class="more stuff"></textarea>
-<br>
-</form>`
-
-const closify_html = `<form id="3">
-<!-- This is a comment. -->
-<!-- This is a second comment. --><br><input><br><input></form>`
-
-const config_html = `<form id="3">
-<!-- This is a comment. -->
-<!-- This is a second comment. --><div><br /><input /><br /><input /><div></div></div></form>`
-
-
-test('Prettify', () => {
-  expect(prettify(ugly_html)).toBe(
-`<form id="3">
   <!-- This is a comment. -->
   <!-- This is a second comment. -->
   <label for="email-0">What's your email?</label>
@@ -91,7 +57,18 @@ test('Prettify', () => {
   <textarea class="more stuff"></textarea>
   <br />
 </form>`
-  )
+
+const closify_html = `<form id="3">
+<!-- This is a comment. -->
+<!-- This is a second comment. --><br><input><br><input></form>`
+
+const config_html = `<form id="3">
+<!-- This is a comment. -->
+<!-- This is a second comment. --><div><br /><input /><br /><input /><div></div></div></form>`
+
+
+test('Prettify', () => {
+  expect(prettify(ugly_html)).toBe(pretty_html)
 })
 
 test('Prettify with HTML check', () => {
@@ -100,7 +77,7 @@ test('Prettify with HTML check', () => {
 
 test('Minify', () => {
   expect(minify(pretty_html)).toBe(
-    `<form id="3"><!-- This is a comment. --><!-- This is a second comment. --><label for="email-0">What's your email?</label><input id="email-0" type="email" title="We need your email for verification." name="email" required /><!-- This is another comment. --><label for="1">What fruits do you like?</label><fieldset id="1"><input id="fruits-1-0" type="checkbox" name="fruits" value="apples" /><label for="fruits-1-0">Apples</label><br /><div><!-- This is an embedded comment. --></div><input id="fruits-1-1" type="checkbox" name="fruits" value="grapes" /><label for="fruits-1-1">Grapes</label><br /></fieldset><textarea>Did you know that 3 &gt; 2?&#13;&#13;This is another paragraph.</textarea><textarea class="more stuff"></textarea><br></form>`
+    `<form id="3"><!-- This is a comment. --><!-- This is a second comment. --><label for="email-0">What's your email?</label><input id="email-0" type="email" title="We need your email for verification." name="email" required /><!-- This is another comment. --><label for="1">What fruits do you like?</label><fieldset id="1"><input id="fruits-1-0" type="checkbox" name="fruits" value="apples" /><label for="fruits-1-0">Apples</label><br /><div><!-- This is an embedded comment. --></div><input id="fruits-1-1" type="checkbox" name="fruits" value="grapes" /><label for="fruits-1-1">Grapes</label><br /></fieldset><textarea>Did you know that 3 &gt; 2?&#13;&#13;This is another paragraph.</textarea><textarea class="more stuff"></textarea><br /></form>`
   )
 })
 
