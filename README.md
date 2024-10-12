@@ -33,7 +33,9 @@ console.log(prettify(html))
 ```
 
 ### Minify
-Turn well-formatted or ugly HTML into a single-line of HTML.
+Turn well-formatted or ugly HTML into a single line of HTML.
+
+> This feature is not a replacement for compressors like [htmlnano](https://github.com/posthtml/htmlnano), which focus on giving you the smallest data-size possible; but rather, it simply removes tabs, returns, and redundant whitespace.
 
 ```js
 import { minify } from 'htmlfy'
