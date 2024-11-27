@@ -1,8 +1,7 @@
-import { Config } from "htmlfy"
-
 export interface DefaultConfig {
-	strict: boolean
-	tab_size: number
+	ignore: Record<string, string>;
+	strict: boolean;
+	tab_size: number;
 }
 
 type RecursiveRequired<T> = {
@@ -14,5 +13,3 @@ type RecursiveRequired<T> = {
 		? RecursiveRequired<T[K]> /* recursively continue through. */
 		: T[K] /* Use the exact type for everything else. */
 }
-
-export type ValidatedConfig = RecursiveRequired<Config>

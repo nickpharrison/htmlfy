@@ -66,6 +66,14 @@ const config_html = `<form id="3">
 <!-- This is a comment. -->
 <!-- This is a second comment. --><div><br /><input /><br /><input /><div></div></div></form>`
 
+const script_html = `<script>
+  document.write('<script src="http://' + (location.host || 'localhost').split(':')[0] + ':35729/livereload.js?snipver=1"></' + 'script>')
+</script>
+`
+// @ts-ignore
+const testConfig = async (config) => {
+  return await prettify(config_html, config)
+}
 
 test('Prettify', () => {
   expect(prettify(ugly_html)).toBe(pretty_html)
@@ -113,6 +121,14 @@ test('Closify with HTML check', () => {
   expect(closify('No HTML', true)).toBe('No HTML')
 })
 
+test('Ignore script', () => {
+  expect(prettify(script_html, { ignore: [ 'script' ] })).toBe(
+`<script>
+  document.write('<script src="http://' + (location.host || 'localhost').split(':')[0] + ':35729/livereload.js?snipver=1"></' + 'script>')
+</script>`
+  )
+})
+
 test('Strict config', () => {
   expect(prettify(config_html, { strict: true })).toBe(
 `<form id="3">
@@ -141,4 +157,8 @@ test('Tab size config', () => {
     </div>
 </form>`
   )
+})
+
+test('Catches invalid ignore config', async () => {
+  await expect(testConfig({ ignore: [ 'script', 1 ]})).rejects.toThrow('Ignore config must be an array of strings.')
 })

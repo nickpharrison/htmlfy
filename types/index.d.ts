@@ -1,7 +1,14 @@
 declare module 'htmlfy' {
+  export interface UserConfig {
+    ignore?: string[];
+    strict?: boolean;
+    tab_size?: number;
+  }
+
   export interface Config {
-    strict?: boolean
-    tab_size?: number
+    ignore: Record<string, string>;
+    strict: boolean;
+    tab_size: number;
   }
 
   /**
@@ -45,5 +52,5 @@ declare module 'htmlfy' {
    * @param {Config} [config] A configuration object.
    * @returns A well-formed HTML string.
    */
-  export function prettify(html: string, config?: Config): string
+  export function prettify(html: string, config?: UserConfig): string
 }

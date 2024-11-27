@@ -21,7 +21,7 @@ export const isHtml = (content) => {
 const mergeObjects = (current, updates) => {
   if (!current || !updates)
     throw new Error("Both 'current' and 'updates' must be passed-in to merge()")
-  if (typeof current !== 'object' || typeof updates !== 'object' || Array.isArray(current) || Array.isArray(updates))
+  if (typeof current !== 'object' || typeof updates !== 'object')
     throw new Error("Both 'current' and 'updates' must be passed-in as objects to merge()")
 
   let merged = { ...current }
@@ -42,8 +42,8 @@ const mergeObjects = (current, updates) => {
  * Merge a user config with the default config.
  * 
  * @param {import('types').DefaultConfig} dconfig The default config.
- * @param {import('htmlfy').Config} config The user config.
- * @returns {import('types').ValidatedConfig}
+ * @param {import('htmlfy').UserConfig} config The user config.
+ * @returns {import('htmlfy').Config}
  */
 export const mergeConfig = (dconfig, config) => {
   /**
@@ -54,35 +54,101 @@ export const mergeConfig = (dconfig, config) => {
 }
 
 /**
+ * Ignores elements by protecting or unprotecting their entities.
+ * 
+ * @param {string} html 
+ * @param {Record<string, string>} ignore
+ * @param {string} [mode]
+ * @returns {string}
+ */
+export const ignoreElement = (html, ignore, mode = 'protect') => {
+  for (let e = 0; e < Object.keys(ignore).length; e++) {
+    const regex = new RegExp(`<${ignore[e]}[^>]*>((.|\n)*?)<\/${ignore[e]}>`, "g")
+    html = html.replace(regex, mode === 'protect' ? protectElement : unprotectElement)
+  }
+
+  return html
+}
+
+/**
+ * Protect an element by inserting entities.
+ * 
+ * @param {string} match 
+ * @param {any} capture 
+ * @returns 
+ */
+const protectElement = (match, capture) => {
+  return match.replace(capture, (match) => {
+    return match
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/\//g, '&#47;')
+      .replace(/"/g, '&#34;')
+      .replace(/'/g, '&#39;')
+      .replace(/\n/g, '&#13;')
+      .replace(/%/g, '&#37;')
+      .replace(/\{/g, '&#123;')
+      .replace(/\}/g, '&#125;')
+      .replace(/\s/g, '&nbsp;')
+  })
+}
+
+/**
+ * Unprotect an element by removing entities.
+ * 
+ * @param {string} match 
+ * @param {any} capture 
+ * @returns 
+ */
+const unprotectElement = (match, capture) => {
+  return match.replace(capture, (match) => {
+    return match
+      .replace(/&lt;/g, '<')
+      .replace(/&gt;/g, '>')
+      .replace(/&#47;/g, '/')
+      .replace(/&#34;/g, '"')
+      .replace(/&#39;/g, "'")
+      .replace(/&#13;/g, '\n')
+      .replace(/&#37;/g, '%')
+      .replace(/&#123;/g, '{')
+      .replace(/'&#125;/g, '}')
+      .replace(/&nbsp;/g, ' ')
+  })
+}
+
+/**
  * Validate any passed-in config options and merge with CONFIG.
  * 
- * @param {import('htmlfy').Config} config A user config.
- * @returns {import('types').ValidatedConfig} A validated config.
+ * @param {import('htmlfy').UserConfig} config A user config.
+ * @returns {import('htmlfy').Config} A validated config.
  */
 export const validateConfig = (config) => {
-  if (typeof config !== 'object') throw 'Config must be an object.'
+  if (typeof config !== 'object') throw new Error('Config must be an object.')
 
-  const config_empty = !(Object.hasOwn(config, 'tab_size') || Object.hasOwn(config, 'strict'))
+  const config_empty = !(Object.hasOwn(config, 'tab_size') || Object.hasOwn(config, 'strict') || Object.hasOwn(config, 'ignore'))
   if (config_empty) return CONFIG
 
   let tab_size = config.tab_size
 
   if (tab_size) {
-    if (typeof tab_size !== 'number') throw 'Tab size must be a number.'
+    if (typeof tab_size !== 'number') throw new Error('Tab size must be a number.')
     const safe = Number.isSafeInteger(tab_size)
-    if (!safe) throw `Tab size ${tab_size} is not safe. See https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number/isSafeInteger for more info.`
+    if (!safe) throw new Error(`Tab size ${tab_size} is not safe. See https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number/isSafeInteger for more info.`)
 
     /** 
      * Round down, just in case a safe floating point,
      * like 4.0, was passed.
      */
     tab_size = Math.floor(tab_size)
-    if (tab_size < 1 || tab_size > 16) throw 'Tab size out of range. Expecting 1 to 16.'
+    if (tab_size < 1 || tab_size > 16) throw new Error('Tab size out of range. Expecting 1 to 16.')
   
     config.tab_size = tab_size
   }
 
-  if (Object.hasOwn(config, 'strict') && typeof config.strict !== 'boolean') throw 'Strict config must be a boolean.' 
+  if (Object.hasOwn(config, 'strict') && typeof config.strict !== 'boolean')
+    throw new Error('Strict config must be a boolean.')
+  if (Object.hasOwn(config, 'ignore') && (!Array.isArray(config.ignore) || !config.ignore?.every((e) => typeof e === 'string')))
+    throw new Error('Ignore config must be an array of strings.')
 
   return mergeConfig(CONFIG, config)
 

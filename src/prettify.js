@@ -1,6 +1,6 @@
 import { closify } from './closify.js'
 import { minify } from './minify.js'
-import { isHtml, validateConfig } from './utils.js'
+import { ignoreElement, isHtml, validateConfig } from './utils.js'
 import { CONFIG } from './constants.js'
 
 /**
@@ -137,7 +137,7 @@ const process = (html, step) => {
  * Format HTML with line returns and indentations.
  * 
  * @param {string} html The HTML string to prettify.
- * @param {import('htmlfy').Config} [config] A configuration object.
+ * @param {import('htmlfy').UserConfig} [config] A user configuration object.
  * @returns {string} A well-formed HTML string.
  */
 export const prettify = (html, config) => {
@@ -147,8 +147,20 @@ export const prettify = (html, config) => {
   const validated_config = config ? validateConfig(config) : CONFIG
   strict = validated_config.strict
 
+  const ignore = Object.keys(validated_config.ignore).length > 0
+
+  /* Protect ignored elements. */
+  if (ignore) {
+    html = ignoreElement(html, validated_config.ignore)
+  }
+
   html = preprocess(html)
   html = process(html, validated_config.tab_size)
+
+  /* Unprotect ignored elements. */
+  if (ignore) {
+    html = ignoreElement(html, validated_config.ignore, 'unprotect')
+  }
 
   return html
 }
