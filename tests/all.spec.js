@@ -70,6 +70,15 @@ const script_html = `<script>
   document.write('<script src="http://' + (location.host || 'localhost').split(':')[0] + ':35729/livereload.js?snipver=1"></' + 'script>')
 </script>
 `
+
+const css_html = `
+<main><div>Hello World</div></main>
+<style>
+  body {
+    width: 100
+  }
+</style>`
+
 // @ts-ignore
 const testConfig = async (config) => {
   return await prettify(config_html, config)
@@ -121,11 +130,24 @@ test('Closify with HTML check', () => {
   expect(closify('No HTML', true)).toBe('No HTML')
 })
 
-test('Ignore script', () => {
+test('Ignore script tag', () => {
   expect(prettify(script_html, { ignore: [ 'script' ] })).toBe(
 `<script>
   document.write('<script src="http://' + (location.host || 'localhost').split(':')[0] + ':35729/livereload.js?snipver=1"></' + 'script>')
 </script>`
+  )
+})
+
+test('Ignore style tag', () => {
+  expect(prettify(css_html, { ignore: [ 'style' ]})).toBe(
+`<main>
+  <div>Hello World</div>
+</main>
+<style>
+  body {
+    width: 100
+  }
+</style>`
   )
 })
 
