@@ -79,6 +79,15 @@ const css_html = `
   }
 </style>`
 
+const code_html = `
+<pre><code>// This is my code
+Please()
+{
+  leave it alone
+}
+</code></pre>
+`
+
 // @ts-ignore
 const testConfig = async (config) => {
   return await prettify(config_html, config)
@@ -148,6 +157,17 @@ test('Ignore style tag', () => {
     width: 100
   }
 </style>`
+  )
+})
+
+test('Ignore nested tags', () => {
+  expect(prettify(code_html, { ignore: [ 'pre', 'code' ]})).toBe(
+`<pre><code>// This is my code
+Please()
+{
+  leave it alone
+}
+</code></pre>`
   )
 })
 
