@@ -111,7 +111,7 @@ const unprotectElement = (match, capture) => {
       .replace(/&#13;/g, '\n')
       .replace(/&#37;/g, '%')
       .replace(/&#123;/g, '{')
-      .replace(/'&#125;/g, '}')
+      .replace(/&#125;/g, '}')
       .replace(/&nbsp;/g, ' ')
   })
 }
