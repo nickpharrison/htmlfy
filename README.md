@@ -111,9 +111,38 @@ These configuration options can only be passed to `prettify`.
 Default config:
 ```js
 {
+  ignore: {},
   strict: false,
   tab_size: 2
 }
+```
+
+### Ignore
+Tell htmlfy to not process some elements and leave them as-is.
+
+```js
+import { prettify } from 'htmlfy'
+
+const html = `
+<main><div>Hello World</div></main>
+<style>
+body {
+  width: 100
+}
+</style>`
+console.log(prettify(html, { ignore: [ 'style' ] }))
+/*
+<main>
+  <div>
+    Hello World
+  </div>
+</main>
+<style>
+body {
+  width: 100;
+}
+</style>
+*/
 ```
 
 ### Strict
