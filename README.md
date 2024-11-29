@@ -89,6 +89,19 @@ console.log(entify(html, true))
 */
 ```
 
+### Trimify
+Trim leading and trailing whitespace for whatever HTML element(s) you'd like.
+
+```js
+import { trimify } from 'htmlfy'
+
+const html = `<div>
+Hello World
+</div>`
+console.log(trimify(html, [ 'div' ]))
+/* <div>Hello World</div> */
+```
+
 ### Default Import
 If needed, you can use a default import for `htmlfy`.
 
@@ -177,3 +190,16 @@ console.log(prettify(html, { tab_size: 4 }))
 </main>
 */
 ```
+
+### Trim
+Trim leading and trailing whitespace from `textarea` elements, since all whitespace is preserved by default.
+
+```js
+import { prettify } from 'htmlfy'
+
+const html = '<textarea>    Hello World    </textarea>'
+console.log(prettify(html, { trim: [ 'textarea' ]}))
+/*<textarea>Hello&nbsp;World</textarea>*/
+```
+
+> For compatibility and possible future expansion, we require declaring an array with the value 'textarea', as opposed to using something like `{ trim: true }`. Passing in additional HTML element values has no effect, since we already trim whitespace for all other elements.
