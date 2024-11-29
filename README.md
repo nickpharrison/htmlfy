@@ -16,7 +16,7 @@ HTML formatter yo! Prettify, minify and more!
 Most projects will only need to use `prettify` and/or `minify`.
 
 ### Prettify
-Turn single-line or ugly HTML into highly formatted HTML. This is a wrapper for all other functions, and then it adds indentation.
+Turn single-line or ugly HTML into highly formatted HTML. This is a wrapper for all other functions, except `trimify`, and then it adds indentation.
 
 ```js
 import { prettify } from 'htmlfy'
@@ -90,7 +90,7 @@ console.log(entify(html, true))
 ```
 
 ### Trimify
-Trim leading and trailing whitespace for whatever HTML element(s) you'd like.
+Trim leading and trailing whitespace for whatever HTML element(s) you'd like. This is a standalone function, which is not run with `prettify` by default.
 
 ```js
 import { trimify } from 'htmlfy'
