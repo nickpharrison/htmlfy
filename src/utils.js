@@ -80,15 +80,8 @@ export const ignoreElement = (html, ignore, mode = 'protect') => {
 const protectElement = (match, capture) => {
   return match.replace(capture, (match) => {
     return match
-      .replace(/</g, '&lt;')
-      .replace(/>/g, '&gt;')
-      .replace(/\//g, '&#47;')
-      .replace(/"/g, '&#34;')
-      .replace(/'/g, '&#39;')
-      .replace(/\n/g, '&#13;')
-      .replace(/%/g, '&#37;')
-      .replace(/\{/g, '&#123;')
-      .replace(/\}/g, '&#125;')
+      .replace(/\n/g, '&#10;')
+      .replace(/\r/g, '&#13;')
       .replace(/\s/g, '&nbsp;')
   })
 }
@@ -103,15 +96,8 @@ const protectElement = (match, capture) => {
 const unprotectElement = (match, capture) => {
   return match.replace(capture, (match) => {
     return match
-      .replace(/&lt;/g, '<')
-      .replace(/&gt;/g, '>')
-      .replace(/&#47;/g, '/')
-      .replace(/&#34;/g, '"')
-      .replace(/&#39;/g, "'")
-      .replace(/&#13;/g, '\n')
-      .replace(/&#37;/g, '%')
-      .replace(/&#123;/g, '{')
-      .replace(/&#125;/g, '}')
+      .replace(/&#10;/g, '\n')
+      .replace(/&#13;/g, '\r')
       .replace(/&nbsp;/g, ' ')
   })
 }
