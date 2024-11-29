@@ -4,5 +4,6 @@
 export const CONFIG = {
   ignore: {},
   strict: false,
-  tab_size: 2
+  tab_size: 2,
+  trim: {}
 }

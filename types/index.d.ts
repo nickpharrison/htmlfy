@@ -3,12 +3,14 @@ declare module 'htmlfy' {
     ignore?: string[];
     strict?: boolean;
     tab_size?: number;
+    trim?: string[];
   }
 
   export interface Config {
     ignore: Record<string, string>;
     strict: boolean;
     tab_size: number;
+    trim: Record<string, string>;
   }
 
   /**

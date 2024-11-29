@@ -89,6 +89,27 @@ const protectElement = (match, capture) => {
 }
 
 /**
+ * Trim leading and trailing whitespace characters.
+ * 
+ * @param {string} html
+ * @param {Record<string, string>} trim
+ * @returns {string}
+ */
+export const trimify = (html, trim) => {
+  for (let e = 0; e < Object.keys(trim).length; e++) {
+    /* Whitespace character must be escaped with '\' or RegExp() won't include it. */
+    const leading_whitespace = new RegExp(`(<${trim[e]}[^>]*>)\\s+`, "g")
+    const trailing_whitespace = new RegExp(`\\s+(</${trim[e]}>)`, "g")
+
+    html = html
+      .replace(leading_whitespace, '$1')
+      .replace(trailing_whitespace, '$1')
+  }
+
+  return html
+}
+
+/**
  * Unprotect an element by removing entities.
  * 
  * @param {string} match 
@@ -115,7 +136,11 @@ const unprotectElement = (match, capture) => {
 export const validateConfig = (config) => {
   if (typeof config !== 'object') throw new Error('Config must be an object.')
 
-  const config_empty = !(Object.hasOwn(config, 'tab_size') || Object.hasOwn(config, 'strict') || Object.hasOwn(config, 'ignore'))
+  const config_empty = !(
+    Object.hasOwn(config, 'tab_size') || 
+    Object.hasOwn(config, 'strict') || 
+    Object.hasOwn(config, 'ignore') || 
+    Object.hasOwn(config, 'trim'))
   if (config_empty) return CONFIG
 
   let tab_size = config.tab_size
@@ -139,6 +164,8 @@ export const validateConfig = (config) => {
     throw new Error('Strict config must be a boolean.')
   if (Object.hasOwn(config, 'ignore') && (!Array.isArray(config.ignore) || !config.ignore?.every((e) => typeof e === 'string')))
     throw new Error('Ignore config must be an array of strings.')
+  if (Object.hasOwn(config, 'trim') && (!Array.isArray(config.trim) || !config.trim?.every((e) => typeof e === 'string')))
+    throw new Error('Trim config must be an array of strings.')
 
   return mergeConfig(CONFIG, config)
 

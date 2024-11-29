@@ -2,6 +2,7 @@ export interface DefaultConfig {
 	ignore: Record<string, string>;
 	strict: boolean;
 	tab_size: number;
+	trim: Record<string, string>;
 }
 
 type RecursiveRequired<T> = {

@@ -1,12 +1,17 @@
 import { closify } from './closify.js'
 import { minify } from './minify.js'
-import { ignoreElement, isHtml, validateConfig } from './utils.js'
+import { ignoreElement, isHtml, trimify, validateConfig } from './utils.js'
 import { CONFIG } from './constants.js'
 
 /**
  * @type {boolean}
  */
 let strict
+
+/**
+ * @type {Record<string, string>}
+ */
+let trim
 
 /**
  * @type {{ line: string[] }}
@@ -47,6 +52,10 @@ const enqueue = (html) => {
  */
 const preprocess = (html) => {
   html = closify(html, false)
+
+  if (trim)
+    trimify(html, trim)
+
   html = minify(html, false)
   html = enqueue(html)
 
@@ -148,6 +157,7 @@ export const prettify = (html, config) => {
   strict = validated_config.strict
 
   const ignore = Object.keys(validated_config.ignore).length > 0
+  trim = validated_config.trim
 
   /* Protect ignored elements. */
   if (ignore) {

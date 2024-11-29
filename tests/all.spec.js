@@ -2,6 +2,7 @@ import { closify } from '../src/closify.js'
 import { entify } from '../src/entify.js'
 import { minify } from '../src/minify.js'
 import { prettify } from '../src/prettify.js'
+import { trimify } from '../src/utils.js'
 import { expect, test } from 'vitest'
 
 const ugly_html = `<form id="3"     >     <!-- 
@@ -78,10 +79,24 @@ Please()
 </code></pre>
 `
 
+const trim_leading_whitespace = `<div> 
+
+  Hello</div>`
+const trim_trailing_whitespace = `<div>Hello
+
+  
+
+</div>`
+
 // @ts-ignore
 const testConfig = async (config) => {
   return await prettify(config_html, config)
 }
+
+test('Trimify', () => {
+  expect(trimify(trim_leading_whitespace, { '0': 'div' })).toBe('<div>Hello</div>')
+  expect(trimify(trim_trailing_whitespace, { '0': 'div' })).toBe('<div>Hello</div>')
+})
 
 test('Prettify', () => {
   expect(prettify(ugly_html)).toBe(pretty_html)
@@ -193,4 +208,8 @@ test('Tab size config', () => {
 
 test('Catches invalid ignore config', async () => {
   await expect(testConfig({ ignore: [ 'script', 1 ]})).rejects.toThrow('Ignore config must be an array of strings.')
+})
+
+test('Catches invalid trim config', async () => {
+  await expect(testConfig({ trim: [ 'textarea', 1 ]})).rejects.toThrow('Trim config must be an array of strings.')
 })
