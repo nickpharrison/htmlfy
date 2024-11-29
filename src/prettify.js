@@ -9,7 +9,7 @@ import { CONFIG } from './constants.js'
 let strict
 
 /**
- * @type {Record<string, string>}
+ * @type {string[]}
  */
 let trim
 
@@ -53,8 +53,8 @@ const enqueue = (html) => {
 const preprocess = (html) => {
   html = closify(html, false)
 
-  if (trim)
-    trimify(html, trim)
+  if (trim.length > 0)
+    html = trimify(html, trim)
 
   html = minify(html, false)
   html = enqueue(html)
@@ -156,7 +156,7 @@ export const prettify = (html, config) => {
   const validated_config = config ? validateConfig(config) : CONFIG
   strict = validated_config.strict
 
-  const ignore = Object.keys(validated_config.ignore).length > 0
+  const ignore = validated_config.ignore.length > 0
   trim = validated_config.trim
 
   /* Protect ignored elements. */

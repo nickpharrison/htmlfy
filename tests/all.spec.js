@@ -94,8 +94,12 @@ const testConfig = async (config) => {
 }
 
 test('Trimify', () => {
-  expect(trimify(trim_leading_whitespace, { '0': 'div' })).toBe('<div>Hello</div>')
-  expect(trimify(trim_trailing_whitespace, { '0': 'div' })).toBe('<div>Hello</div>')
+  expect(trimify(trim_leading_whitespace, ['div'])).toBe('<div>Hello</div>')
+  expect(trimify(trim_trailing_whitespace, ['div'])).toBe('<div>Hello</div>')
+  expect(prettify(entify_html, { trim: [ 'textarea' ]})).toBe(
+    `<textarea>Did&nbsp;&nbsp;&nbsp;you&nbsp;know&nbsp;that&nbsp;3&nbsp;&gt;&nbsp;&nbsp;&nbsp;2?&#10;&#10;This&nbsp;is&nbsp;another&nbsp;paragraph.</textarea>
+<textarea class="more stuff"></textarea>`
+  )
 })
 
 test('Prettify', () => {

@@ -21,17 +21,23 @@ export const isHtml = (content) => {
 const mergeObjects = (current, updates) => {
   if (!current || !updates)
     throw new Error("Both 'current' and 'updates' must be passed-in to merge()")
-  if (typeof current !== 'object' || typeof updates !== 'object')
-    throw new Error("Both 'current' and 'updates' must be passed-in as objects to merge()")
 
-  let merged = { ...current }
-
-  for (let key of Object.keys(updates)) {
-    if (typeof updates[key] !== 'object') {
-      merged[key] = updates[key]
-    } else {
-      /* key is an object, run mergeObjects again. */
-      merged[key] = mergeObjects(merged[key] || {}, updates[key])
+  /**
+   * @type {any}
+   */
+  let merged
+  
+  if (Array.isArray(current)) {
+    merged = structuredClone(current).concat(updates)
+  } else if (typeof current === 'object') {
+    merged = { ...current }
+    for (let key of Object.keys(updates)) {
+      if (typeof updates[key] !== 'object') {
+        merged[key] = updates[key]
+      } else {
+        /* key is an object, run mergeObjects again. */
+        merged[key] = mergeObjects(merged[key] || {}, updates[key])
+      }
     }
   }
 
@@ -57,12 +63,12 @@ export const mergeConfig = (dconfig, config) => {
  * Ignores elements by protecting or unprotecting their entities.
  * 
  * @param {string} html 
- * @param {Record<string, string>} ignore
+ * @param {string[]} ignore
  * @param {string} [mode]
  * @returns {string}
  */
 export const ignoreElement = (html, ignore, mode = 'protect') => {
-  for (let e = 0; e < Object.keys(ignore).length; e++) {
+  for (let e = 0; e < ignore.length; e++) {
     const regex = new RegExp(`<${ignore[e]}[^>]*>((.|\n)*?)<\/${ignore[e]}>`, "g")
     html = html.replace(regex, mode === 'protect' ? protectElement : unprotectElement)
   }
@@ -92,11 +98,11 @@ const protectElement = (match, capture) => {
  * Trim leading and trailing whitespace characters.
  * 
  * @param {string} html
- * @param {Record<string, string>} trim
+ * @param {string[]} trim
  * @returns {string}
  */
 export const trimify = (html, trim) => {
-  for (let e = 0; e < Object.keys(trim).length; e++) {
+  for (let e = 0; e < trim.length; e++) {
     /* Whitespace character must be escaped with '\' or RegExp() won't include it. */
     const leading_whitespace = new RegExp(`(<${trim[e]}[^>]*>)\\s+`, "g")
     const trailing_whitespace = new RegExp(`\\s+(</${trim[e]}>)`, "g")

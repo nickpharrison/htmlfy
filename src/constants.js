@@ -2,8 +2,8 @@
  * @type {import('types').DefaultConfig}
  */
 export const CONFIG = {
-  ignore: {},
+  ignore: [],
   strict: false,
   tab_size: 2,
-  trim: {}
+  trim: []
 }

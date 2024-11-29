@@ -1,8 +1,8 @@
 export interface DefaultConfig {
-	ignore: Record<string, string>;
+	ignore: string[];
 	strict: boolean;
 	tab_size: number;
-	trim: Record<string, string>;
+	trim: string[];
 }
 
 type RecursiveRequired<T> = {

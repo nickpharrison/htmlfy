@@ -6,12 +6,7 @@ declare module 'htmlfy' {
     trim?: string[];
   }
 
-  export interface Config {
-    ignore: Record<string, string>;
-    strict: boolean;
-    tab_size: number;
-    trim: Record<string, string>;
-  }
+  export type Config = Required<UserConfig>
 
   /**
    * Ensure void elements are "self-closing".
@@ -55,4 +50,13 @@ declare module 'htmlfy' {
    * @returns A well-formed HTML string.
    */
   export function prettify(html: string, config?: UserConfig): string
+
+  /**
+   * Trim leading and trailing whitespace from the defined HTML elements.
+   * 
+   * @param {string} html
+   * @param {string[]} trim
+   * @returns A trimmed string.
+   */
+  export function trimify(html: string, trim: string[]): string
 }
