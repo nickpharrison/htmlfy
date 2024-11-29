@@ -16,7 +16,6 @@ export const entify = (html, minify = false) => {
   html = html.replace(/<textarea[^>]*>((.|\n)*?)<\/textarea>/g, (match, capture) => {
     return match.replace(capture, (match) => {
       return match
-        .replace(/&/g, '&amp;')
         .replace(/</g, '&lt;')
         .replace(/>/g, '&gt;')
         .replace(/"/g, '&quot;')
