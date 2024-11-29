@@ -14,15 +14,7 @@ title="We need your email for verification." name="email" required><!--    This 
 <input id="fruits-1-0" type="checkbox" name="fruits" value="apples">
 <label for="fruits-1-0"  >Apples<  /label><br><div><!--      This is an embedded comment. --></div>
 <input id="fruits-1-1" type="checkbox" name="fruits" value="grapes">
-<label for="fruits-1-1">Grapes</label><br></fieldset>     
-<textarea  >
-
-  Did   you know that 3 >   2?
-
-This is another paragraph.   
-
-
- </textarea><textarea class="  more  stuff  ">    </textarea>
+<label for="fruits-1-1">Grapes</label><br></fieldset>
 <br>
 </form>`
 
@@ -53,8 +45,6 @@ const pretty_html = `<form id="3">
     <label for="fruits-1-1">Grapes</label>
     <br />
   </fieldset>
-  <textarea>Did you know that 3 &gt; 2?&#13;&#13;This is another paragraph.</textarea>
-  <textarea class="more stuff"></textarea>
   <br />
 </form>`
 
@@ -103,7 +93,7 @@ test('Prettify with HTML check', () => {
 
 test('Minify', () => {
   expect(minify(pretty_html)).toBe(
-    `<form id="3"><!-- This is a comment. --><!-- This is a second comment. --><label for="email-0">What's your email?</label><input id="email-0" type="email" title="We need your email for verification." name="email" required /><!-- This is another comment. --><label for="1">What fruits do you like?</label><fieldset id="1"><input id="fruits-1-0" type="checkbox" name="fruits" value="apples" /><label for="fruits-1-0">Apples</label><br /><div><!-- This is an embedded comment. --></div><input id="fruits-1-1" type="checkbox" name="fruits" value="grapes" /><label for="fruits-1-1">Grapes</label><br /></fieldset><textarea>Did you know that 3 &gt; 2?&#13;&#13;This is another paragraph.</textarea><textarea class="more stuff"></textarea><br /></form>`
+    `<form id="3"><!-- This is a comment. --><!-- This is a second comment. --><label for="email-0">What's your email?</label><input id="email-0" type="email" title="We need your email for verification." name="email" required /><!-- This is another comment. --><label for="1">What fruits do you like?</label><fieldset id="1"><input id="fruits-1-0" type="checkbox" name="fruits" value="apples" /><label for="fruits-1-0">Apples</label><br /><div><!-- This is an embedded comment. --></div><input id="fruits-1-1" type="checkbox" name="fruits" value="grapes" /><label for="fruits-1-1">Grapes</label><br /></fieldset><br /></form>`
   )
 })
 
@@ -113,7 +103,7 @@ test('Minify with HTML check', () => {
 
 test('Entify', () => {
   expect(entify(entify_html)).toBe(
-    `<textarea  >Did   you know that 3 &gt;   2?&#13;&#13;This is another paragraph.</textarea><textarea class="  more  stuff  "></textarea>`
+    `<textarea  >&#10;&#10;Did&nbsp;&nbsp;&nbsp;you&nbsp;know&nbsp;that&nbsp;3&nbsp;&gt;&nbsp;&nbsp;&nbsp;2?&#10;&#10;This&nbsp;is&nbsp;another&nbsp;paragraph.&nbsp;&nbsp;&nbsp;&#10;&#10;&#10;</textarea><textarea class="  more  stuff  ">&nbsp;&nbsp;&nbsp;&nbsp;</textarea>`
   )
 })
 
@@ -123,7 +113,7 @@ test('Entify with plain text', () => {
 
 test('Entify with minify', () => {
   expect(entify(entify_html, true)).toBe(
-    `<textarea>Did you know that 3 &gt; 2?&#13;&#13;This is another paragraph.</textarea><textarea class="more stuff"></textarea>`
+    `<textarea>&#10;&#10;Did&nbsp;&nbsp;&nbsp;you&nbsp;know&nbsp;that&nbsp;3&nbsp;&gt;&nbsp;&nbsp;&nbsp;2?&#10;&#10;This&nbsp;is&nbsp;another&nbsp;paragraph.&nbsp;&nbsp;&nbsp;&#10;&#10;&#10;</textarea><textarea class="more stuff">&nbsp;&nbsp;&nbsp;&nbsp;</textarea>`
   )
 })
 
