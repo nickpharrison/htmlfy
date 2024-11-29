@@ -124,9 +124,10 @@ These configuration options can only be passed to `prettify`.
 Default config:
 ```js
 {
-  ignore: {},
+  ignore: [],
   strict: false,
-  tab_size: 2
+  tab_size: 2,
+  trim: []
 }
 ```
 
