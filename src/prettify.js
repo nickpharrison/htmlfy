@@ -159,7 +159,7 @@ export const prettify = (html, config) => {
   const ignore = validated_config.ignore.length > 0
   trim = validated_config.trim
 
-  const protectionString = config?.protection_string || '_&i-£___£%_';
+  const protectionString = config?.protection_string || '_!i-£___£%_';
 
   /* Protect ignored elements. */
   if (ignore) {
