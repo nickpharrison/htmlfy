@@ -88,11 +88,11 @@ export const ignoreElement = (html, ignore, mode, protectionString) => {
 const protectElement = (match, capture, protectionString) => {
   return match.replace(capture, (match) => {
     return match
-      .replace(/</g, protectionString + 'lt')
-      .replace(/>/g, protectionString + 'gt')
-      .replace(/\n/g, protectionString + 'nl')
-      .replace(/\r/g, protectionString + 'cr')
-      .replace(/\s/g, protectionString + 'ws')
+      .replace(/</g, '-' + protectionString + 'lt-')
+      .replace(/>/g, '-' + protectionString + 'gt-')
+      .replace(/\n/g, '-' + protectionString + 'nl-')
+      .replace(/\r/g, '-' + protectionString + 'cr-')
+      .replace(/\s/g, '-' + protectionString + 'ws-')
   })
 }
 
@@ -128,11 +128,11 @@ export const trimify = (html, trim) => {
 const unprotectElement = (match, capture, protectionString) => {
   return match.replace(capture, (match) => {
     return match
-      .replace(new RegExp(protectionString + 'lt', "g"), '<')
-      .replace(new RegExp(protectionString + 'gt', "g"), '>')
-      .replace(new RegExp(protectionString + 'nl', "g"), '\n')
-      .replace(new RegExp(protectionString + 'cr', "g"), '\r')
-      .replace(new RegExp(protectionString + 'ws', "g"), ' ')
+      .replace(new RegExp('-' + protectionString + 'lt-', "g"), '<')
+      .replace(new RegExp('-' + protectionString + 'gt-', "g"), '>')
+      .replace(new RegExp('-' + protectionString + 'nl-', "g"), '\n')
+      .replace(new RegExp('-' + protectionString + 'cr-', "g"), '\r')
+      .replace(new RegExp('-' + protectionString + 'ws-', "g"), ' ')
   })
 }
 
