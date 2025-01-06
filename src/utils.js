@@ -65,13 +65,13 @@ export const mergeConfig = (dconfig, config) => {
  * @param {string} html 
  * @param {string[]} ignore
  * @param {'protect'|'unprotect'} mode
- * @param {string} protectionString
+ * @param {string} ignore_with
  * @returns {string}
  */
-export const ignoreElement = (html, ignore, mode, protectionString) => {
+export const ignoreElement = (html, ignore, mode, ignore_with) => {
   for (let e = 0; e < ignore.length; e++) {
     const regex = new RegExp(`<${ignore[e]}[^>]*>((.|\n)*?)<\/${ignore[e]}>`, "g")
-    html = html.replace(regex, mode === 'protect' ? (match, capture) => protectElement(match, capture, protectionString) : (match, capture) => unprotectElement(match, capture, protectionString))
+    html = html.replace(regex, mode === 'protect' ? (match, capture) => protectElement(match, capture, ignore_with) : (match, capture) => unprotectElement(match, capture, ignore_with))
   }
 
   return html
@@ -150,7 +150,7 @@ export const validateConfig = (config) => {
     Object.hasOwn(config, 'strict') || 
     Object.hasOwn(config, 'ignore') || 
     Object.hasOwn(config, 'trim') || 
-    Object.hasOwn(config, 'protection_string'))
+    Object.hasOwn(config, 'ignore_with'))
   if (config_empty) return CONFIG
 
   let tab_size = config.tab_size
@@ -171,9 +171,11 @@ export const validateConfig = (config) => {
   }
 
   if (Object.hasOwn(config, 'strict') && typeof config.strict !== 'boolean')
-    throw new Error('Strict config must be a boolean.')
+    throw new Error(`Strict config must be a boolean, not ${typeof config.strict}.`)
   if (Object.hasOwn(config, 'ignore') && (!Array.isArray(config.ignore) || !config.ignore?.every((e) => typeof e === 'string')))
     throw new Error('Ignore config must be an array of strings.')
+  if (Object.hasOwn(config, 'ignore_with') && typeof config.ignore_with !== 'string')
+    throw new Error(`Ignore_with config must be a string, not ${typeof config.ignore_with}.`)
   if (Object.hasOwn(config, 'trim') && (!Array.isArray(config.trim) || !config.trim?.every((e) => typeof e === 'string')))
     throw new Error('Trim config must be an array of strings.')
 
