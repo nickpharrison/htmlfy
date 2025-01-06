@@ -4,6 +4,7 @@ declare module 'htmlfy' {
     strict?: boolean;
     tab_size?: number;
     trim?: string[];
+    ignore_with?: string;
   }
 
   export type Config = Required<UserConfig>

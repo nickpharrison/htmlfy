@@ -64,13 +64,14 @@ export const mergeConfig = (dconfig, config) => {
  * 
  * @param {string} html 
  * @param {string[]} ignore
- * @param {string} [mode]
+ * @param {'protect'|'unprotect'} mode
+ * @param {string} ignore_with
  * @returns {string}
  */
-export const ignoreElement = (html, ignore, mode = 'protect') => {
+export const ignoreElement = (html, ignore, mode, ignore_with) => {
   for (let e = 0; e < ignore.length; e++) {
     const regex = new RegExp(`<${ignore[e]}[^>]*>((.|\n)*?)<\/${ignore[e]}>`, "g")
-    html = html.replace(regex, mode === 'protect' ? protectElement : unprotectElement)
+    html = html.replace(regex, mode === 'protect' ? (match, capture) => protectElement(match, capture, ignore_with) : (match, capture) => unprotectElement(match, capture, ignore_with))
   }
 
   return html
@@ -81,16 +82,17 @@ export const ignoreElement = (html, ignore, mode = 'protect') => {
  * 
  * @param {string} match 
  * @param {any} capture 
+ * @param {string} protectionString 
  * @returns 
  */
-const protectElement = (match, capture) => {
+const protectElement = (match, capture, protectionString) => {
   return match.replace(capture, (match) => {
     return match
-      .replace(/</g, '&lt;')
-      .replace(/>/g, '&gt;')
-      .replace(/\n/g, '&#10;')
-      .replace(/\r/g, '&#13;')
-      .replace(/\s/g, '&nbsp;')
+      .replace(/</g, '-' + protectionString + 'lt-')
+      .replace(/>/g, '-' + protectionString + 'gt-')
+      .replace(/\n/g, '-' + protectionString + 'nl-')
+      .replace(/\r/g, '-' + protectionString + 'cr-')
+      .replace(/\s/g, '-' + protectionString + 'ws-')
   })
 }
 
@@ -120,16 +122,17 @@ export const trimify = (html, trim) => {
  * 
  * @param {string} match 
  * @param {any} capture 
+ * @param {string} protectionString 
  * @returns 
  */
-const unprotectElement = (match, capture) => {
+const unprotectElement = (match, capture, protectionString) => {
   return match.replace(capture, (match) => {
     return match
-      .replace(/&lt;/g, '<')
-      .replace(/&gt;/g, '>')
-      .replace(/&#10;/g, '\n')
-      .replace(/&#13;/g, '\r')
-      .replace(/&nbsp;/g, ' ')
+      .replace(new RegExp('-' + protectionString + 'lt-', "g"), '<')
+      .replace(new RegExp('-' + protectionString + 'gt-', "g"), '>')
+      .replace(new RegExp('-' + protectionString + 'nl-', "g"), '\n')
+      .replace(new RegExp('-' + protectionString + 'cr-', "g"), '\r')
+      .replace(new RegExp('-' + protectionString + 'ws-', "g"), ' ')
   })
 }
 
@@ -146,7 +149,8 @@ export const validateConfig = (config) => {
     Object.hasOwn(config, 'tab_size') || 
     Object.hasOwn(config, 'strict') || 
     Object.hasOwn(config, 'ignore') || 
-    Object.hasOwn(config, 'trim'))
+    Object.hasOwn(config, 'trim') || 
+    Object.hasOwn(config, 'ignore_with'))
   if (config_empty) return CONFIG
 
   let tab_size = config.tab_size
@@ -167,9 +171,11 @@ export const validateConfig = (config) => {
   }
 
   if (Object.hasOwn(config, 'strict') && typeof config.strict !== 'boolean')
-    throw new Error('Strict config must be a boolean.')
+    throw new Error(`Strict config must be a boolean, not ${typeof config.strict}.`)
   if (Object.hasOwn(config, 'ignore') && (!Array.isArray(config.ignore) || !config.ignore?.every((e) => typeof e === 'string')))
     throw new Error('Ignore config must be an array of strings.')
+  if (Object.hasOwn(config, 'ignore_with') && typeof config.ignore_with !== 'string')
+    throw new Error(`Ignore_with config must be a string, not ${typeof config.ignore_with}.`)
   if (Object.hasOwn(config, 'trim') && (!Array.isArray(config.trim) || !config.trim?.every((e) => typeof e === 'string')))
     throw new Error('Trim config must be an array of strings.')
 

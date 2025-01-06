@@ -3,6 +3,7 @@ export interface DefaultConfig {
 	strict: boolean;
 	tab_size: number;
 	trim: string[];
+	ignore_with: string
 }
 
 type RecursiveRequired<T> = {
