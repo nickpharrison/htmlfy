@@ -1,9 +1,11 @@
 import { closify } from '../src/closify.js'
+import { CONFIG } from '../src/constants.js'
 import { entify } from '../src/entify.js'
 import { minify } from '../src/minify.js'
 import { prettify } from '../src/prettify.js'
 import { trimify } from '../src/utils.js'
 import { expect, test } from 'vitest'
+
 
 const ugly_html = `<form id="3"     >     <!-- 
       
@@ -56,6 +58,10 @@ const closify_html = `<form id="3">
 const config_html = `<form id="3">
 <!-- This is a comment. -->
 <!-- This is a second comment. --><div><br /><input /><br /><input /><div></div></div></form>`
+
+const config_html_with_ignore_string = `<form id="3">
+<!-- This is a comment. -->
+<!-- This is a second comment. --><div><br /><input /><p>This contains &lt;angled&gt; brackets -${CONFIG.ignore_with}gt- and an unfortunate combination of characters</p><input /><div></div></div></form>`
 
 const script_html = `<script>
   document.write('<script src="http://' + (location.host || 'localhost').split(':')[0] + ':35729/livereload.js?snipver=1"></' + 'script>')
@@ -206,6 +212,22 @@ test('Tab size config', () => {
         <input />
         <div></div>
     </div>
+</form>`
+  )
+})
+
+test('Default ignore_with in HTML', () => {
+  expect(prettify(config_html_with_ignore_string, { ignore: ['p'], ignore_with: '!!-H--_-98'})).toBe(
+`<form id="3">
+  <!-- This is a comment. -->
+  <!-- This is a second comment. -->
+  <div>
+    <br />
+    <input />
+    <p>This contains &lt;angled&gt; brackets -_!i-£___£%_gt- and an unfortunate combination of characters</p>
+    <input />
+    <div></div>
+  </div>
 </form>`
   )
 })

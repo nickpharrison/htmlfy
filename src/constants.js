@@ -6,5 +6,5 @@ export const CONFIG = {
   strict: false,
   tab_size: 2,
   trim: [],
-  protection_string: '',
+  ignore_with: '_!i-£___£%_',
 }
