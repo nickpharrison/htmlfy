@@ -60,40 +60,32 @@ export const mergeConfig = (dconfig, config) => {
 }
 
 /**
- * Ignores elements by protecting or unprotecting their entities.
+ * Replace entities with ignore string.
  * 
  * @param {string} html 
- * @param {string[]} ignore
- * @param {'protect'|'unprotect'} mode
- * @param {string} ignore_with
+ * @param {import('htmlfy').Config} config
  * @returns {string}
  */
-export const ignoreElement = (html, ignore, mode, ignore_with) => {
+export const setIgnoreElement = (html, config) => {
+  const ignore = config.ignore
+  const ignore_string = config.ignore_with
+
   for (let e = 0; e < ignore.length; e++) {
     const regex = new RegExp(`<${ignore[e]}[^>]*>((.|\n)*?)<\/${ignore[e]}>`, "g")
-    html = html.replace(regex, mode === 'protect' ? (match, capture) => protectElement(match, capture, ignore_with) : (match, capture) => unprotectElement(match, capture, ignore_with))
+
+    html = html.replace(regex, (/** @type {string} */match, /** @type {any} */capture) => {
+      return match.replace(capture, (match) => {
+        return match
+          .replace(/</g, '-' + ignore_string + 'lt-')
+          .replace(/>/g, '-' + ignore_string + 'gt-')
+          .replace(/\n/g, '-' + ignore_string + 'nl-')
+          .replace(/\r/g, '-' + ignore_string + 'cr-')
+          .replace(/\s/g, '-' + ignore_string + 'ws-')
+      })
+    })
   }
-
+  
   return html
-}
-
-/**
- * Protect an element by inserting entities.
- * 
- * @param {string} match 
- * @param {any} capture 
- * @param {string} protectionString 
- * @returns 
- */
-const protectElement = (match, capture, protectionString) => {
-  return match.replace(capture, (match) => {
-    return match
-      .replace(/</g, '-' + protectionString + 'lt-')
-      .replace(/>/g, '-' + protectionString + 'gt-')
-      .replace(/\n/g, '-' + protectionString + 'nl-')
-      .replace(/\r/g, '-' + protectionString + 'cr-')
-      .replace(/\s/g, '-' + protectionString + 'ws-')
-  })
 }
 
 /**
@@ -118,22 +110,32 @@ export const trimify = (html, trim) => {
 }
 
 /**
- * Unprotect an element by removing entities.
+ * Replace ignore string with entities.
  * 
- * @param {string} match 
- * @param {any} capture 
- * @param {string} protectionString 
- * @returns 
+ * @param {string} html 
+ * @param {import('htmlfy').Config} config
+ * @returns {string}
  */
-const unprotectElement = (match, capture, protectionString) => {
-  return match.replace(capture, (match) => {
-    return match
-      .replace(new RegExp('-' + protectionString + 'lt-', "g"), '<')
-      .replace(new RegExp('-' + protectionString + 'gt-', "g"), '>')
-      .replace(new RegExp('-' + protectionString + 'nl-', "g"), '\n')
-      .replace(new RegExp('-' + protectionString + 'cr-', "g"), '\r')
-      .replace(new RegExp('-' + protectionString + 'ws-', "g"), ' ')
-  })
+export const unsetIgnoreElement = (html, config) => {
+  const ignore = config.ignore
+  const ignore_string = config.ignore_with
+
+  for (let e = 0; e < ignore.length; e++) {
+    const regex = new RegExp(`<${ignore[e]}[^>]*>((.|\n)*?)<\/${ignore[e]}>`, "g")
+
+    html = html.replace(regex, (/** @type {string} */match, /** @type {any} */capture) => {
+      return match.replace(capture, (match) => {
+        return match
+          .replace(new RegExp('-' + ignore_string + 'lt-', "g"), '<')
+          .replace(new RegExp('-' + ignore_string + 'gt-', "g"), '>')
+          .replace(new RegExp('-' + ignore_string + 'nl-', "g"), '\n')
+          .replace(new RegExp('-' + ignore_string + 'cr-', "g"), '\r')
+          .replace(new RegExp('-' + ignore_string + 'ws-', "g"), ' ')
+      })
+    })
+  }
+  
+  return html
 }
 
 /**

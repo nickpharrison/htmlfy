@@ -1,6 +1,6 @@
 import { closify } from './closify.js'
 import { minify } from './minify.js'
-import { ignoreElement, isHtml, trimify, validateConfig } from './utils.js'
+import { isHtml, setIgnoreElement, trimify, unsetIgnoreElement, validateConfig } from './utils.js'
 import { CONFIG } from './constants.js'
 
 /**
@@ -159,20 +159,14 @@ export const prettify = (html, config) => {
   const ignore = validated_config.ignore.length > 0
   trim = validated_config.trim
 
-  const ignore_with = validated_config.ignore_with;
-
-  /* Protect ignored elements. */
-  if (ignore) {
-    html = ignoreElement(html, validated_config.ignore, 'protect', ignore_with)
-  }
+  /* Preserve ignored elements. */
+  if (ignore) html = setIgnoreElement(html, validated_config)
 
   html = preprocess(html)
   html = process(html, validated_config.tab_size)
 
-  /* Unprotect ignored elements. */
-  if (ignore) {
-    html = ignoreElement(html, validated_config.ignore, 'unprotect', ignore_with)
-  }
+  /* Revert ignored elements. */
+  if (ignore) html = unsetIgnoreElement(html, validated_config)
 
   return html
 }
