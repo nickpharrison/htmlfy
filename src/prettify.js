@@ -53,8 +53,7 @@ const enqueue = (html) => {
 const preprocess = (html) => {
   html = closify(html, false)
 
-  if (trim.length > 0)
-    html = trimify(html, trim)
+  if (trim.length > 0) html = trimify(html, trim)
 
   html = minify(html, false)
   html = enqueue(html)
@@ -122,7 +121,8 @@ const process = (html, step) => {
   })
 
   /* Remove line returns, tabs, and consecutive spaces within html elements or their content. */
-  html = html.replace(/>[^<]*?[^><\/\s][^<]*?<\/|>\s+[^><\s]|<script[^>]*>\s+<\/script>|<(\w+)>\s+<\/(\w+)|<([\w\-]+)[^>]*[^\/]>\s+<\/([\w\-]+)>/g,
+  html = html.replace(
+    />[^<]*?[^><\/\s][^<]*?<\/|>\s+[^><\s]|<script[^>]*>\s+<\/script>|<(\w+)>\s+<\/(\w+)|<([\w\-]+)[^>]*[^\/]>\s+<\/([\w\-]+)>/g,
     match => match.replace(/\n|\t|\s{2,}/g, '')
   )
 

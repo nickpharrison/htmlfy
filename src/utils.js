@@ -6,10 +6,7 @@ import { CONFIG } from './constants.js'
  * @param {string} content Content to evaluate.
  * @returns {boolean} A boolean.
  */
-export const isHtml = (content) => {
-  const regex = /<(?<Element>[A-Za-z]+\b)[^>]*(?:.|\n)*?<\/{1}\k<Element>>/
-  return regex.test(content)
-}
+export const isHtml = (content) => /<(?<Element>[A-Za-z]+\b)[^>]*(?:.|\n)*?<\/{1}\k<Element>>/.test(content)
 
 /**
  * Generic utility which merges two objects.
@@ -20,7 +17,7 @@ export const isHtml = (content) => {
  */
 const mergeObjects = (current, updates) => {
   if (!current || !updates)
-    throw new Error("Both 'current' and 'updates' must be passed-in to merge()")
+    throw new Error("Both 'current' and 'updates' must be passed-in to mergeObjects()")
 
   /**
    * @type {any}
@@ -153,12 +150,14 @@ export const validateConfig = (config) => {
     Object.hasOwn(config, 'ignore') || 
     Object.hasOwn(config, 'trim') || 
     Object.hasOwn(config, 'ignore_with'))
+
   if (config_empty) return CONFIG
 
   let tab_size = config.tab_size
 
   if (tab_size) {
     if (typeof tab_size !== 'number') throw new Error('Tab size must be a number.')
+
     const safe = Number.isSafeInteger(tab_size)
     if (!safe) throw new Error(`Tab size ${tab_size} is not safe. See https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number/isSafeInteger for more info.`)
 
@@ -174,10 +173,13 @@ export const validateConfig = (config) => {
 
   if (Object.hasOwn(config, 'strict') && typeof config.strict !== 'boolean')
     throw new Error(`Strict config must be a boolean, not ${typeof config.strict}.`)
+
   if (Object.hasOwn(config, 'ignore') && (!Array.isArray(config.ignore) || !config.ignore?.every((e) => typeof e === 'string')))
     throw new Error('Ignore config must be an array of strings.')
+
   if (Object.hasOwn(config, 'ignore_with') && typeof config.ignore_with !== 'string')
     throw new Error(`Ignore_with config must be a string, not ${typeof config.ignore_with}.`)
+
   if (Object.hasOwn(config, 'trim') && (!Array.isArray(config.trim) || !config.trim?.every((e) => typeof e === 'string')))
     throw new Error('Trim config must be an array of strings.')
 
