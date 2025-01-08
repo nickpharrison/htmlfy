@@ -1,6 +1,6 @@
 import { closify } from './closify.js'
 import { minify } from './minify.js'
-import { ignoreElement, isHtml, trimify, validateConfig } from './utils.js'
+import { isHtml, setIgnoreElement, trimify, unsetIgnoreElement, validateConfig } from './utils.js'
 import { CONFIG } from './constants.js'
 
 /**
@@ -53,8 +53,7 @@ const enqueue = (html) => {
 const preprocess = (html) => {
   html = closify(html, false)
 
-  if (trim.length > 0)
-    html = trimify(html, trim)
+  if (trim.length > 0) html = trimify(html, trim)
 
   html = minify(html, false)
   html = enqueue(html)
@@ -122,7 +121,8 @@ const process = (html, step) => {
   })
 
   /* Remove line returns, tabs, and consecutive spaces within html elements or their content. */
-  html = html.replace(/>[^<]*?[^><\/\s][^<]*?<\/|>\s+[^><\s]|<script[^>]*>\s+<\/script>|<(\w+)>\s+<\/(\w+)|<([\w\-]+)[^>]*[^\/]>\s+<\/([\w\-]+)>/g,
+  html = html.replace(
+    />[^<]*?[^><\/\s][^<]*?<\/|>\s+[^><\s]|<script[^>]*>\s+<\/script>|<(\w+)>\s+<\/(\w+)|<([\w\-]+)[^>]*[^\/]>\s+<\/([\w\-]+)>/g,
     match => match.replace(/\n|\t|\s{2,}/g, '')
   )
 
@@ -159,20 +159,14 @@ export const prettify = (html, config) => {
   const ignore = validated_config.ignore.length > 0
   trim = validated_config.trim
 
-  const ignore_with = validated_config.ignore_with;
-
-  /* Protect ignored elements. */
-  if (ignore) {
-    html = ignoreElement(html, validated_config.ignore, 'protect', ignore_with)
-  }
+  /* Preserve ignored elements. */
+  if (ignore) html = setIgnoreElement(html, validated_config)
 
   html = preprocess(html)
   html = process(html, validated_config.tab_size)
 
-  /* Unprotect ignored elements. */
-  if (ignore) {
-    html = ignoreElement(html, validated_config.ignore, 'unprotect', ignore_with)
-  }
+  /* Revert ignored elements. */
+  if (ignore) html = unsetIgnoreElement(html, validated_config)
 
   return html
 }

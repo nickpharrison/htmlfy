@@ -6,10 +6,7 @@ import { CONFIG } from './constants.js'
  * @param {string} content Content to evaluate.
  * @returns {boolean} A boolean.
  */
-export const isHtml = (content) => {
-  const regex = /<(?<Element>[A-Za-z]+\b)[^>]*(?:.|\n)*?<\/{1}\k<Element>>/
-  return regex.test(content)
-}
+export const isHtml = (content) => /<(?<Element>[A-Za-z]+\b)[^>]*(?:.|\n)*?<\/{1}\k<Element>>/.test(content)
 
 /**
  * Generic utility which merges two objects.
@@ -20,7 +17,7 @@ export const isHtml = (content) => {
  */
 const mergeObjects = (current, updates) => {
   if (!current || !updates)
-    throw new Error("Both 'current' and 'updates' must be passed-in to merge()")
+    throw new Error("Both 'current' and 'updates' must be passed-in to mergeObjects()")
 
   /**
    * @type {any}
@@ -60,40 +57,32 @@ export const mergeConfig = (dconfig, config) => {
 }
 
 /**
- * Ignores elements by protecting or unprotecting their entities.
+ * Replace entities with ignore string.
  * 
  * @param {string} html 
- * @param {string[]} ignore
- * @param {'protect'|'unprotect'} mode
- * @param {string} ignore_with
+ * @param {import('htmlfy').Config} config
  * @returns {string}
  */
-export const ignoreElement = (html, ignore, mode, ignore_with) => {
+export const setIgnoreElement = (html, config) => {
+  const ignore = config.ignore
+  const ignore_string = config.ignore_with
+
   for (let e = 0; e < ignore.length; e++) {
     const regex = new RegExp(`<${ignore[e]}[^>]*>((.|\n)*?)<\/${ignore[e]}>`, "g")
-    html = html.replace(regex, mode === 'protect' ? (match, capture) => protectElement(match, capture, ignore_with) : (match, capture) => unprotectElement(match, capture, ignore_with))
+
+    html = html.replace(regex, (/** @type {string} */match, /** @type {any} */capture) => {
+      return match.replace(capture, (match) => {
+        return match
+          .replace(/</g, '-' + ignore_string + 'lt-')
+          .replace(/>/g, '-' + ignore_string + 'gt-')
+          .replace(/\n/g, '-' + ignore_string + 'nl-')
+          .replace(/\r/g, '-' + ignore_string + 'cr-')
+          .replace(/\s/g, '-' + ignore_string + 'ws-')
+      })
+    })
   }
-
+  
   return html
-}
-
-/**
- * Protect an element by inserting entities.
- * 
- * @param {string} match 
- * @param {any} capture 
- * @param {string} protectionString 
- * @returns 
- */
-const protectElement = (match, capture, protectionString) => {
-  return match.replace(capture, (match) => {
-    return match
-      .replace(/</g, '-' + protectionString + 'lt-')
-      .replace(/>/g, '-' + protectionString + 'gt-')
-      .replace(/\n/g, '-' + protectionString + 'nl-')
-      .replace(/\r/g, '-' + protectionString + 'cr-')
-      .replace(/\s/g, '-' + protectionString + 'ws-')
-  })
 }
 
 /**
@@ -118,22 +107,32 @@ export const trimify = (html, trim) => {
 }
 
 /**
- * Unprotect an element by removing entities.
+ * Replace ignore string with entities.
  * 
- * @param {string} match 
- * @param {any} capture 
- * @param {string} protectionString 
- * @returns 
+ * @param {string} html 
+ * @param {import('htmlfy').Config} config
+ * @returns {string}
  */
-const unprotectElement = (match, capture, protectionString) => {
-  return match.replace(capture, (match) => {
-    return match
-      .replace(new RegExp('-' + protectionString + 'lt-', "g"), '<')
-      .replace(new RegExp('-' + protectionString + 'gt-', "g"), '>')
-      .replace(new RegExp('-' + protectionString + 'nl-', "g"), '\n')
-      .replace(new RegExp('-' + protectionString + 'cr-', "g"), '\r')
-      .replace(new RegExp('-' + protectionString + 'ws-', "g"), ' ')
-  })
+export const unsetIgnoreElement = (html, config) => {
+  const ignore = config.ignore
+  const ignore_string = config.ignore_with
+
+  for (let e = 0; e < ignore.length; e++) {
+    const regex = new RegExp(`<${ignore[e]}[^>]*>((.|\n)*?)<\/${ignore[e]}>`, "g")
+
+    html = html.replace(regex, (/** @type {string} */match, /** @type {any} */capture) => {
+      return match.replace(capture, (match) => {
+        return match
+          .replace(new RegExp('-' + ignore_string + 'lt-', "g"), '<')
+          .replace(new RegExp('-' + ignore_string + 'gt-', "g"), '>')
+          .replace(new RegExp('-' + ignore_string + 'nl-', "g"), '\n')
+          .replace(new RegExp('-' + ignore_string + 'cr-', "g"), '\r')
+          .replace(new RegExp('-' + ignore_string + 'ws-', "g"), ' ')
+      })
+    })
+  }
+  
+  return html
 }
 
 /**
@@ -151,12 +150,14 @@ export const validateConfig = (config) => {
     Object.hasOwn(config, 'ignore') || 
     Object.hasOwn(config, 'trim') || 
     Object.hasOwn(config, 'ignore_with'))
+
   if (config_empty) return CONFIG
 
   let tab_size = config.tab_size
 
   if (tab_size) {
     if (typeof tab_size !== 'number') throw new Error('Tab size must be a number.')
+
     const safe = Number.isSafeInteger(tab_size)
     if (!safe) throw new Error(`Tab size ${tab_size} is not safe. See https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number/isSafeInteger for more info.`)
 
@@ -172,10 +173,13 @@ export const validateConfig = (config) => {
 
   if (Object.hasOwn(config, 'strict') && typeof config.strict !== 'boolean')
     throw new Error(`Strict config must be a boolean, not ${typeof config.strict}.`)
+
   if (Object.hasOwn(config, 'ignore') && (!Array.isArray(config.ignore) || !config.ignore?.every((e) => typeof e === 'string')))
     throw new Error('Ignore config must be an array of strings.')
+
   if (Object.hasOwn(config, 'ignore_with') && typeof config.ignore_with !== 'string')
     throw new Error(`Ignore_with config must be a string, not ${typeof config.ignore_with}.`)
+
   if (Object.hasOwn(config, 'trim') && (!Array.isArray(config.trim) || !config.trim?.every((e) => typeof e === 'string')))
     throw new Error('Trim config must be an array of strings.')
 

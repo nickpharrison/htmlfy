@@ -6,12 +6,11 @@ import { isHtml } from "./utils.js"
  * by removing line returns, tabs, and relevant spaces.
  * 
  * @param {string} html The HTML string to minify.
- * @param {boolean} html_check Check to see if the content contains any HTML, before processing.
+ * @param {boolean} check_html Check to see if the content contains any HTML, before processing.
  * @returns {string} A minified HTML string.
  */
-export const minify = (html, html_check = true) => {
-  if (html_check)
-    if (!isHtml(html)) return html
+export const minify = (html, check_html = true) => {
+  if (check_html && !isHtml(html)) return html
 
   /**
    * Ensure textarea content is specially minified and protected
