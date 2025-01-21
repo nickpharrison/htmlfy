@@ -129,6 +129,8 @@ Default config:
   ignore_with: '_!i-£___£%_',
   strict: false,
   tab_size: 2,
+  tag_wrap: false,
+  tag_wrap_width: 80,
   trim: []
 }
 ```
@@ -200,6 +202,30 @@ console.log(prettify(html, { tab_size: 4 }))
 </main>
 */
 ```
+
+### Tag Wrap
+Wrap attributes within opening tags and void elements if they're greater than `tag_wrap_width`. Default is `false`.
+
+```js
+import { prettify } from 'htmlfy'
+
+const html = `<form><input id="email-0" type="email" title="We need your email for verification." name="email" required /></form>`
+console.log(prettify(html, { tag_wrap: true }))
+/*
+<form>
+  <input
+    id="email-0"
+    type="email"
+    title="We need your email for verification."
+    name="email"
+    required
+  />
+</form>
+*/
+```
+
+### Tag Wrap Width
+If an opening tag or void element's character width is larger than this number, and `tag_wrap` is set to `true`, attributes will be wrapped (aka prettified). Default is `80`.
 
 ### Trim
 Trim leading and trailing whitespace within `textarea` elements, since all whitespace is preserved by default.
