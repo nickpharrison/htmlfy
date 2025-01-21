@@ -6,5 +6,7 @@ export const CONFIG = {
   ignore_with: '_!i-£___£%_',
   strict: false,
   tab_size: 2,
+  tag_wrap: false,
+  tag_wrap_width: 80,
   trim: []
 }

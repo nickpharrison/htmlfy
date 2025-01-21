@@ -4,6 +4,8 @@ declare module 'htmlfy' {
     ignore_with?: string;
     strict?: boolean;
     tab_size?: number;
+    tag_wrap?: boolean;
+    tag_wrap_width?: number;
     trim?: string[];
   }
 
