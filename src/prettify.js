@@ -70,7 +70,6 @@ const preprocess = (html) => {
 const process = (html, config) => {
   const step = config.tab_size
   const wrap = config.tag_wrap
-  console.log('wrap?', wrap)
   const wrap_width = config.tag_wrap_width
 
   /* Track current number of indentations needed. */
