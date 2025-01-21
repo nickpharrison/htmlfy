@@ -1,5 +1,5 @@
 /**
- * @type {import('types').DefaultConfig}
+ * @type {import('htmlfy').Config}
  */
 export const CONFIG = {
   ignore: [],

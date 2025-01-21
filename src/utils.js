@@ -44,7 +44,7 @@ const mergeObjects = (current, updates) => {
 /**
  * Merge a user config with the default config.
  * 
- * @param {import('types').DefaultConfig} dconfig The default config.
+ * @param {import('htmlfy').Config} dconfig The default config.
  * @param {import('htmlfy').UserConfig} config The user config.
  * @returns {import('htmlfy').Config}
  */
