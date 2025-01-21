@@ -44,7 +44,7 @@ const mergeObjects = (current, updates) => {
 /**
  * Merge a user config with the default config.
  * 
- * @param {import('types').DefaultConfig} dconfig The default config.
+ * @param {import('htmlfy').Config} dconfig The default config.
  * @param {import('htmlfy').UserConfig} config The user config.
  * @returns {import('htmlfy').Config}
  */
@@ -145,18 +145,21 @@ export const validateConfig = (config) => {
   if (typeof config !== 'object') throw new Error('Config must be an object.')
 
   const config_empty = !(
-    Object.hasOwn(config, 'tab_size') || 
-    Object.hasOwn(config, 'strict') || 
     Object.hasOwn(config, 'ignore') || 
-    Object.hasOwn(config, 'trim') || 
-    Object.hasOwn(config, 'ignore_with'))
+    Object.hasOwn(config, 'ignore_with') || 
+    Object.hasOwn(config, 'strict') || 
+    Object.hasOwn(config, 'tab_size') || 
+    Object.hasOwn(config, 'tag_wrap') || 
+    Object.hasOwn(config, 'tag_wrap_width') || 
+    Object.hasOwn(config, 'trim')
+  )
 
   if (config_empty) return CONFIG
 
   let tab_size = config.tab_size
 
   if (tab_size) {
-    if (typeof tab_size !== 'number') throw new Error('Tab size must be a number.')
+    if (typeof tab_size !== 'number') throw new Error(`tab_size must be a number, not ${typeof config.tab_size}.`)
 
     const safe = Number.isSafeInteger(tab_size)
     if (!safe) throw new Error(`Tab size ${tab_size} is not safe. See https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number/isSafeInteger for more info.`)
@@ -171,14 +174,20 @@ export const validateConfig = (config) => {
     config.tab_size = tab_size
   }
 
-  if (Object.hasOwn(config, 'strict') && typeof config.strict !== 'boolean')
-    throw new Error(`Strict config must be a boolean, not ${typeof config.strict}.`)
-
   if (Object.hasOwn(config, 'ignore') && (!Array.isArray(config.ignore) || !config.ignore?.every((e) => typeof e === 'string')))
     throw new Error('Ignore config must be an array of strings.')
 
   if (Object.hasOwn(config, 'ignore_with') && typeof config.ignore_with !== 'string')
     throw new Error(`Ignore_with config must be a string, not ${typeof config.ignore_with}.`)
+
+  if (Object.hasOwn(config, 'strict') && typeof config.strict !== 'boolean')
+    throw new Error(`Strict config must be a boolean, not ${typeof config.strict}.`)
+
+  if (Object.hasOwn(config, 'tag_wrap') && typeof config.tag_wrap !== 'boolean')
+    throw new Error(`tag_wrap config must be a boolean, not ${typeof config.tag_wrap}.`)
+
+  if (Object.hasOwn(config, 'tag_wrap_width') && typeof config.tag_wrap_width !== 'number')
+    throw new Error(`tag_wrap_width config must be a number, not ${typeof config.tag_wrap_width}.`)
 
   if (Object.hasOwn(config, 'trim') && (!Array.isArray(config.trim) || !config.trim?.every((e) => typeof e === 'string')))
     throw new Error('Trim config must be an array of strings.')

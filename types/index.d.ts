@@ -4,6 +4,8 @@ declare module 'htmlfy' {
     ignore_with?: string;
     strict?: boolean;
     tab_size?: number;
+    tag_wrap?: boolean;
+    tag_wrap_width?: number;
     trim?: string[];
   }
 
@@ -47,7 +49,7 @@ declare module 'htmlfy' {
    * Format HTML with line returns and indentations.
    * 
    * @param {string} html The HTML string to prettify.
-   * @param {Config} [config] A configuration object.
+   * @param {UserConfig} [config] A user configuration object.
    * @returns A well-formed HTML string.
    */
   export function prettify(html: string, config?: UserConfig): string

@@ -64,10 +64,14 @@ const preprocess = (html) => {
 /**
  * 
  * @param {string} html The HTML string to process.
- * @param {number} step 
+ * @param {import('htmlfy').Config} config 
  * @returns {string}
  */
-const process = (html, step) => {
+const process = (html, config) => {
+  const step = config.tab_size
+  const wrap = config.tag_wrap
+  const wrap_width = config.tag_wrap_width
+
   /* Track current number of indentations needed. */
   let indents = ''
 
@@ -114,9 +118,31 @@ const process = (html, step) => {
         const result = match
           .replace(`[#-# : ${index} : `, '')
           .replace(' : #-#]', '')
+        
+        const tag_regex = /<[A-Za-z]+\b[^>]*(?:.|\n)*?\/?>/g /* Is opening tag or void element. */
 
-        /* Pad the string with spaces and return. */
-        return result.padStart(result.length + (step * offset))
+        /* Wrap the attributes of open tags and void elements. */
+        if (wrap && tag_regex.test(source) && source.length > wrap_width) {
+          const attribute_regex = /\s{1}[A-Za-z-]+(?:=".*?")?/g /* Matches all tag/element attributes. */
+          const tag_parts = source.split(attribute_regex).filter(Boolean)
+          const attributes = source.matchAll(attribute_regex)
+          const padding = step * offset
+          const inner_padding = padding + step
+
+          let wrapped = tag_parts[0].padStart(tag_parts[0].length + padding) + `\n`
+          for (const a of attributes) {
+            /* Must declare separately so we can pad this string before adding it to `wrapped`. */
+            const a_string = a[0].trim().padStart(a[0].trim().length + inner_padding) + `\n`
+            wrapped += a_string
+          }
+          const e_string = tag_parts[1].padStart(tag_parts[1].trim().length + padding + (strict ? 1 : 0))
+          wrapped += e_string
+
+          return wrapped
+        } else {
+          /* Pad the string with spaces and return. */
+          return result.padStart(result.length + (step * offset))
+        }
       })
   })
 
@@ -127,7 +153,7 @@ const process = (html, step) => {
   )
 
   /* Remove self-closing nature of void elements. */
-  if (strict) html = html.replace(/\s\/>/g, '>')
+  if (strict) html = html.replace(/\s\/>|\/>/g, '>')
 
   const lead_newline_check = html.substring(0, 1)
   const tail_newline_check = html.substring(html.length - 1)
@@ -163,7 +189,7 @@ export const prettify = (html, config) => {
   if (ignore) html = setIgnoreElement(html, validated_config)
 
   html = preprocess(html)
-  html = process(html, validated_config.tab_size)
+  html = process(html, validated_config)
 
   /* Revert ignored elements. */
   if (ignore) html = unsetIgnoreElement(html, validated_config)
