@@ -21,9 +21,10 @@ export const minify = (html, check_html = true) => {
   /* All other minification. */
   return html
     .replace(/\n|\t/g, '')
-    .replace(/[a-z]+="\s*"/ig, '')
     .replace(/>\s+</g, '><')
     .replace(/\s+/g, ' ')
+    .replace(/(.+=)"\s+"/ig, '$1""')
+    .replace(/(.+=)'\s+'/ig, "$1''")
     .replace(/\s>/g, '>')
     .replace(/<\s\//g, '</')
     .replace(/>\s/g, '>')

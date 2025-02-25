@@ -186,6 +186,19 @@ const trim_trailing_whitespace = `<div>Hello
 
 </div>`
 
+const empty_attributes_spaces = `<main>
+  <div data-some-thing2-else=''></div>
+  <div data-some1thing2else="  "></div>
+  <div data-one-two-three=""></div>
+  <div data-name="" data-1='  '></div>
+</main>`
+const empty_attributes_fixed = `<main>
+  <div data-some-thing2-else=''></div>
+  <div data-some1thing2else=""></div>
+  <div data-one-two-three=""></div>
+  <div data-name="" data-1=''></div>
+</main>`
+
 // @ts-ignore
 const testConfig = async (config) => {
   return await prettify(config_html, config)
@@ -222,6 +235,10 @@ test('Prettify with tag wrap and tab size', () => {
 
 test('Prettify with tag wrap and strict HTML', () => {
   expect(prettify(ugly_html, { strict: true, tag_wrap: true })).toBe(pretty_wrapped_strict_html)
+})
+
+test('Prettify with empty attributes', () => {
+  expect(prettify(empty_attributes_spaces)).toBe(empty_attributes_fixed)
 })
 
 test('Minify', () => {
