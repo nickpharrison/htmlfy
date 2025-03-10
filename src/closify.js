@@ -17,7 +17,7 @@ const void_elements = [
 export const closify = (html, check_html = true) => {
   if (check_html && !isHtml(html)) return html
   
-  return html.replace(/<([a-zA-Z\-0-9]+)[^>]*>/g, (match, name) => {
+  return html.replace(/<([a-zA-Z\-0-9:]+)[^>]*>/g, (match, name) => {
     if (void_elements.indexOf(name) > -1)
       return (`${match.substring(0, match.length - 1)} />`).replace(/\/\s\//g, '/')
 
